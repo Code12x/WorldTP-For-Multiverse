@@ -1,0 +1,56 @@
+name: WorldTP
+version: ${project.version}
+main: com.code12.worldtp.WorldTP
+api-version: 1.17
+authors: [ Code12 ]
+description: Like multiverse /mvtp, but with a GUI
+softdepend: ['Multiverse-Core', 'Multiverse-Inventories']
+commands:
+  worldtp:
+    descrition: Opens a menu for the player to navigate between worlds
+    usage: /<command>
+    aliases: wtp
+  editworld:
+    description: Allows an admin to edit the registery of a world.
+    usage: /<command> [world name] [display name] [item to be displayed] [admin only (true/false)]
+    permission: worldtp.editworld
+  deleteworld:
+    description: Allows an admin to delete a registered world group. (only a virtual delete, doesn't acturally delete the world file)
+    usage: /<command> [world to delete]
+    permission: worldtp.deleteworld
+  listworlds:
+    description: Outputs a list of the worlds on a server to the player who issued the command.
+    usage: /<command>
+    permission: worldtp.listworlds
+  reloadworlds:
+    description: Reregisters all the worlds for the WorldTP menu.
+    usage: /<command>
+    permission: worldtp.reloadworlds
+  setlobby:
+    description: Sets a world to be the world that players spawn at when they join the server.
+    usage: /<command>
+    permission: worldtp.setlobby
+  setworldtpworldspawnpoint:
+    description: Sets a location that players teleport to when they enter that world.
+    usage: /<command>
+    permission: worldtp.setworldtpworldspawnpoint
+  removelobby:
+    description: Removes the lobby spawn point location from the server.
+    usage: /<command>
+    permission: worldtp.removelobby
+  removeworldtpworldspawnpoint:
+    description: Removes the WorldTP World Spawn Point for the world that the player is in when the command is run.
+    usage: /<command>
+    permission: worldtp.removeworldtpworldspawnpoint
+  sethome:
+    description: Sets the players home for that world where the player is when running the command.
+    usage: /<command>
+    permission: worldtp.sethome
+  home:
+    description: Teleports the player who ran the command to his home if he has one set.
+    usage: /<command>
+    permission: worldtp.home
+  spawn:
+    description: Teleports the player to spawn of the world he is in.
+    usage: /<command>
+    permission: worldtp.spawn

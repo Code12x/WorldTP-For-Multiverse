@@ -1,0 +1,49 @@
+package com.code12.worldtp.commands;
+
+import com.code12.worldtp.WorldTP;
+import com.code12.worldtp.files.DataManager;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class CommandRemoveWorldTPWorldSpawnPoint implements CommandExecutor {
+    WorldTP plugin;
+
+    public DataManager data;
+
+    public CommandRemoveWorldTPWorldSpawnPoint(WorldTP plugin, DataManager data) {
+        this.plugin = plugin;
+        this.data = data;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
+
+        if(!sender.hasPermission("worldtp.removeworldtpworldspawnpoint")){
+            sender.sendMessage(ChatColor.YELLOW + "You don't have the necessary permission to use this command.");
+        }
+
+        if(!(sender instanceof Player)){
+            sender.sendMessage("Only players can use this command.");
+        }
+
+        Player player = (Player) sender;
+
+        String world = player.getWorld().getName();
+
+        if(args.length != 0){
+            player.sendMessage("This command requires 0 argumens. Go to the world where you want to remove the WorldTP World Spawn Point, and run the command to remove the WorldTP World Spawn Point.");
+        }
+
+        data.getConfig().set("menuGroupID." + world + ".WorldTPWorldSpawnPoint", null);
+
+        player.sendMessage(ChatColor.YELLOW + "WorldTP World Spawn Point removed from world: " + world + "!");
+
+        data.saveConfig();
+
+        return true;
+    }
+
+}
