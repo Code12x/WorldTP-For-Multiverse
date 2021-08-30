@@ -4,7 +4,7 @@ main: com.code12.worldtp.WorldTP
 api-version: 1.17
 authors: [ Code12 ]
 description: Like multiverse /mvtp, but with a GUI
-softdepend: ['Multiverse-Core', 'Multiverse-Inventories']
+softdepend: ['Multiverse-Core']
 commands:
   worldtp:
     descrition: Opens a menu for the player to navigate between worlds
