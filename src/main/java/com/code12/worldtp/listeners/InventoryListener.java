@@ -48,7 +48,7 @@ public class InventoryListener implements Listener {
                         Boolean home = config.getConfig().getBoolean(menuGroup + ".Home_Teleporting");
 
                         String worldToLeaveName = player.getWorld().getName();
-                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
+                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName, data);
                         String worldGroupToLeave = worldToLeave.getWorldGroup();
 
 
@@ -94,17 +94,13 @@ public class InventoryListener implements Listener {
                                 locationToTP = data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint");
                             }
 
+                            if (playerLocation.getWorld().getName().startsWith(menuGroup)){
+                                player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
+                                event.setCancelled(true);
+                                break;
+                            }
+
                             if (locationToTP != null) {
-                                worldToEnterName = locationToTP.getWorld().getName();
-                                worldToEnter = new WorldTPWorld(plugin, worldToEnterName);
-                                worldToEnterWorldGroup = worldToEnter.getWorldGroup();
-
-                                if (worldGroupToLeave.equals(worldToEnterWorldGroup)) {
-                                    player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
-                                    event.setCancelled(true);
-                                    break;
-                                }
-
                                 player.teleport(locationToTP);
                             } else {
                                 World world = Bukkit.getWorld(menuGroup);
@@ -130,33 +126,31 @@ public class InventoryListener implements Listener {
             }
             if (event.getCurrentItem().getItemMeta() != null) {
                 for (String menuGroup : menuGroupList) {
-                    if(event.getCurrentItem().getItemMeta().getDisplayName().startsWith(menuGroup)){
+                    if (event.getCurrentItem().getItemMeta().getDisplayName().startsWith(menuGroup)) {
                         String worldToLeaveName = player.getWorld().getName();
-                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
+                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName, data);
                         String worldGroupToLeave = worldToLeave.getWorldGroup();
-
-
-                        String worldToEnterName;
-                        WorldTPWorld worldin;
-                        String worldinWorldGroup;
 
                         Location playerLocation = player.getLocation();
 
                         Location locationToTP = null;
 
+
                         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " Spawn")) {
-                            if(data.getConfig().getString("worldGroup." + menuGroup + ".overworld") == null){
+
+                            if (data.getConfig().getString("worldGroup." + menuGroup + ".overworld") == null) {
                                 player.sendMessage(ChatColor.YELLOW + "That place does not exist.");
                                 event.setCancelled(true);
                                 return;
                             }
-                            if(data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") == null){
-                                locationToTP = Bukkit.getWorld(data.getConfig().getString("worldGroup." + menuGroup + ".overworld")).getSpawnLocation();
-                            }else{
+                            locationToTP = Bukkit.getWorld(data.getConfig().getString("worldGroup." + menuGroup + ".overworld")).getSpawnLocation();
+
+                            if (data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null) {
                                 locationToTP = data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint");
                             }
+
                         } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " Nether")) {
-                            if(data.getConfig().getString("worldGroup." + menuGroup + ".nether") == null){
+                            if (data.getConfig().getString("worldGroup." + menuGroup + ".nether") == null) {
                                 player.sendMessage(ChatColor.YELLOW + "That place does not exist.");
                                 event.setCancelled(true);
                                 return;
@@ -164,7 +158,7 @@ public class InventoryListener implements Listener {
 
                             locationToTP = Bukkit.getWorld(data.getConfig().getString("worldGroup." + menuGroup + ".nether")).getSpawnLocation();
                         } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " End")) {
-                            if(data.getConfig().getString("worldGroup." + menuGroup + ".the_end") == null){
+                            if (data.getConfig().getString("worldGroup." + menuGroup + ".the_end") == null) {
                                 player.sendMessage(ChatColor.YELLOW + "That place does not exist.");
                                 event.setCancelled(true);
                                 return;
@@ -172,7 +166,7 @@ public class InventoryListener implements Listener {
                             locationToTP = Bukkit.getWorld(data.getConfig().getString("worldGroup." + menuGroup + ".the_end")).getSpawnLocation();
 
                         } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " Home")) {
-                            if(data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup + "_HOME") == null){
+                            if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup + "_HOME") == null) {
                                 player.sendMessage(ChatColor.YELLOW + "That place does not exist.");
                                 event.setCancelled(true);
                                 return;
@@ -188,15 +182,7 @@ public class InventoryListener implements Listener {
                                 locationToTP = data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint");
                             }
 
-                            if(locationToTP == null){
-                                locationToTP = playerLocation;
-                            }
-
-                            worldToEnterName = locationToTP.getWorld().getName();
-                            worldin = new WorldTPWorld(plugin, playerLocation.getWorld().getName());
-                            worldinWorldGroup = worldin.getWorldGroup();
-
-                            if(worldToEnterName.startsWith(worldinWorldGroup)){
+                            if (playerLocation.getWorld().getName().startsWith(menuGroup)){
                                 player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
                                 event.setCancelled(true);
                                 break;
@@ -205,9 +191,12 @@ public class InventoryListener implements Listener {
 
                         if (locationToTP != null) {
                             player.teleport(locationToTP);
-                        } else {
+                        } else{
                             World world = Bukkit.getWorld(menuGroup);
-                            player.teleport(world.getSpawnLocation());
+                            Location spawn = world.getSpawnLocation();
+                            if (data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null)
+                                spawn = data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint");
+                            player.teleport(spawn);
                             if (player.getBedSpawnLocation() != null) {
                                 player.teleport(player.getBedSpawnLocation());
                             }

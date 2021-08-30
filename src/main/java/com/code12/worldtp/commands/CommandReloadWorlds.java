@@ -48,12 +48,11 @@ public class CommandReloadWorlds implements CommandExecutor {
         //gets a list of all the overworlds.
 
         data.getConfig().set("menuGroupList", null);
-        data.getConfig().createSection("menuGroupList");
 
         ArrayList<String> menuGroupList = new ArrayList<>();
         for(MultiverseWorld multiverseWorld : multiverseWorldList){
-            String world = multiverseWorld.getName().toLowerCase();
-            WorldTPWorld worldTPWorld = new WorldTPWorld(plugin, world);
+            String world = multiverseWorld.getName();
+            WorldTPWorld worldTPWorld = new WorldTPWorld(plugin, world, data);
 
             if(worldTPWorld.getWorldType().equals("overworld")){
                 menuGroupList.add(world);
@@ -81,7 +80,7 @@ public class CommandReloadWorlds implements CommandExecutor {
 
             for(MultiverseWorld multiverseWorld : multiverseWorldList){
                 String multiverseWorldName = multiverseWorld.getName();
-                WorldTPWorld world = new WorldTPWorld(plugin, multiverseWorldName);
+                WorldTPWorld world = new WorldTPWorld(plugin, multiverseWorldName, data);
                 if(world.getName().startsWith(worldGroup)){
                     String worldType = world.getWorldType();
                     if(worldType.equals("overworld")){

@@ -14,9 +14,9 @@ public class WorldTPWorld {
     private String worldType;
     private String worldGroup;
 
-    public WorldTPWorld(WorldTP plugin, String worldName){
+    public WorldTPWorld(WorldTP plugin, String worldName, DataManager data){
         this.plugin = plugin;
-        this.data = new DataManager(this.plugin);
+        this.data = data;
         this.name = worldName;
     }
 
@@ -31,9 +31,9 @@ public class WorldTPWorld {
     }
 
     public String getWorldType(){
-        if (name.toLowerCase().endsWith("nether")) {
+        if (name.endsWith("nether")) {
             worldType = "nether";
-        }else if(name.toLowerCase().endsWith("the_end")){
+        }else if(name.endsWith("the_end")){
             worldType = "the_end";
         }else{
             worldType = "overworld";

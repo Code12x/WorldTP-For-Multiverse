@@ -36,7 +36,7 @@ public class CommandSetHome implements CommandExecutor {
         String playerName = player.getName();
         Location loc = player.getLocation();
 
-        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
+        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName(), data);
 
         String worldGroupName = world.getWorldGroup();
 

@@ -36,7 +36,7 @@ public class CommandSpawn implements CommandExecutor {
 
         Player player = (Player) sender;
         String playerName = player.getName();
-        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
+        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName(), data);
         String worldGroup = world.getWorldGroup();
 
         if(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint") != null){

@@ -35,7 +35,7 @@ public class CommandHome implements CommandExecutor {
         Player player = (Player) sender;
         String playerName = player.getName();
 
-        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
+        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName(), data);
         String worldGroupName = world.getWorldGroup();
 
         if(data.getConfig().getLocation("playerLocations." + playerName + "." + worldGroupName + "_HOME") != null){
