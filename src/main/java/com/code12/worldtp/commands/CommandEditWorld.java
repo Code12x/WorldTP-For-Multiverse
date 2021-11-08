@@ -3,6 +3,7 @@ package com.code12.worldtp.commands;
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.apimethods.WorldTPWorldGroup;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,11 +13,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class CommandEditWorld implements CommandExecutor {
     WorldTP plugin;
-    public DataManager data;
+    public DataManager data = References.data;
 
-    public CommandEditWorld(WorldTP plugin, DataManager data) {
+    public CommandEditWorld(WorldTP plugin) {
         this.plugin = plugin;
-        this.data = data;
     }
 
     // The command
@@ -36,7 +36,7 @@ public class CommandEditWorld implements CommandExecutor {
             String displayName = args[1];
             ItemStack displayItem = new ItemStack(Material.getMaterial(args[2].toUpperCase()));
             String adminOnly = args[3];
-            WorldTPWorldGroup worldToRegister = new WorldTPWorldGroup(plugin, data, world, displayName);
+            WorldTPWorldGroup worldToRegister = new WorldTPWorldGroup(plugin, world, displayName);
             worldToRegister.setItem(displayItem);
             if(adminOnly.equalsIgnoreCase("true")){
                 worldToRegister.setAdminOnly(true);

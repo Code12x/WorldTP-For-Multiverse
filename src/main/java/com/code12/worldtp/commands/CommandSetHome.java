@@ -3,6 +3,7 @@ package com.code12.worldtp.commands;
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.apimethods.WorldTPWorld;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -13,11 +14,10 @@ import org.bukkit.entity.Player;
 public class CommandSetHome implements CommandExecutor {
     WorldTP plugin;
 
-    public DataManager data;
+    public DataManager data = References.data;
 
-    public CommandSetHome(WorldTP plugin, DataManager data) {
+    public CommandSetHome(WorldTP plugin) {
         this.plugin = plugin;
-        this.data = data;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CommandSetHome implements CommandExecutor {
         String playerName = player.getName();
         Location loc = player.getLocation();
 
-        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName(), data);
+        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
 
         String worldGroupName = world.getWorldGroup();
 

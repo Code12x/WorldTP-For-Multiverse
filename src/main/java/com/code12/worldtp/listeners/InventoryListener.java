@@ -4,6 +4,7 @@ import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.apimethods.WorldTPWorld;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,13 +20,11 @@ import java.util.List;
 public class InventoryListener implements Listener {
     WorldTP plugin;
 
-    public DataManager data;
-    public ConfigManager config;
+    public DataManager data = References.data;
+    public ConfigManager config = References.config;
 
-    public InventoryListener(WorldTP plugin, DataManager data) {
+    public InventoryListener(WorldTP plugin) {
         this.plugin = plugin;
-        this.data = data;
-        this.config = new ConfigManager(plugin);
     }
 
     @EventHandler
@@ -48,7 +47,7 @@ public class InventoryListener implements Listener {
                         Boolean home = config.getConfig().getBoolean(menuGroup + ".Home_Teleporting");
 
                         String worldToLeaveName = player.getWorld().getName();
-                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName, data);
+                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
                         String worldGroupToLeave = worldToLeave.getWorldGroup();
 
 
@@ -128,7 +127,7 @@ public class InventoryListener implements Listener {
                 for (String menuGroup : menuGroupList) {
                     if (event.getCurrentItem().getItemMeta().getDisplayName().startsWith(menuGroup)) {
                         String worldToLeaveName = player.getWorld().getName();
-                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName, data);
+                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
                         String worldGroupToLeave = worldToLeave.getWorldGroup();
 
                         Location playerLocation = player.getLocation();
