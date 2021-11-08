@@ -2,6 +2,7 @@ package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import com.code12.worldtp.menues.AdvancedWorldTPMenu;
 import com.code12.worldtp.menues.WorldTPMenu;
 import org.bukkit.command.Command;
@@ -12,11 +13,10 @@ import org.bukkit.entity.Player;
 public class CommandWorldTP implements CommandExecutor {
     WorldTP plugin;
 
-    public DataManager data;
+    public DataManager data = References.data;
 
-    public CommandWorldTP(WorldTP plugin, DataManager data) {
+    public CommandWorldTP(WorldTP plugin) {
         this.plugin = plugin;
-        this.data = data;
     }
 
     // the command

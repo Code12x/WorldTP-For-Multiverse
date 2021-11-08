@@ -2,6 +2,7 @@ package com.code12.worldtp.menues;
 
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -14,14 +15,12 @@ import java.util.List;
 public class AdvancedWorldTPMenu {
     WorldTP plugin;
 
-    public DataManager data;
+    public DataManager data = References.data;
 
     public Inventory tpMenu;
 
     public AdvancedWorldTPMenu(WorldTP plugin) {
         this.plugin = plugin;
-
-        data = new DataManager(plugin);
 
         int numberOfWorlds = data.getConfig().getStringList("menuGroupList").size();
         int numberOfSlots = 9;

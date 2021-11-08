@@ -5,6 +5,7 @@ import com.code12.worldtp.apimethods.WorldTPWorld;
 import com.code12.worldtp.apimethods.WorldTPWorldGroup;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
@@ -22,13 +23,11 @@ import java.util.Collection;
 public class CommandReloadWorlds implements CommandExecutor {
 
     WorldTP plugin;
-    public DataManager data;
-    public ConfigManager config;
+    public DataManager data = References.data;
+    public ConfigManager config = References.config;
 
-    public CommandReloadWorlds(WorldTP plugin, DataManager data) {
+    public CommandReloadWorlds(WorldTP plugin) {
         this.plugin = plugin;
-        this.data = data;
-        this.config = new ConfigManager(this.plugin);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class CommandReloadWorlds implements CommandExecutor {
         ArrayList<String> menuGroupList = new ArrayList<>();
         for(MultiverseWorld multiverseWorld : multiverseWorldList){
             String world = multiverseWorld.getName();
-            WorldTPWorld worldTPWorld = new WorldTPWorld(plugin, world, data);
+            WorldTPWorld worldTPWorld = new WorldTPWorld(plugin, world);
 
             if(worldTPWorld.getWorldType().equals("overworld")){
                 menuGroupList.add(world);
@@ -70,7 +69,7 @@ public class CommandReloadWorlds implements CommandExecutor {
                 displayName = data.getConfig().getString("menuGroupID." + worldGroup + ".displayName");
             }
             Boolean adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
-            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(plugin, data, worldGroup, displayName);
+            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(plugin, worldGroup, displayName);
             worldTPWorldGroup.setItem(item);
             worldTPWorldGroup.setAdminOnly(adminOnly);
             worldTPWorldGroup.registerWorldGroup();
@@ -80,7 +79,7 @@ public class CommandReloadWorlds implements CommandExecutor {
 
             for(MultiverseWorld multiverseWorld : multiverseWorldList){
                 String multiverseWorldName = multiverseWorld.getName();
-                WorldTPWorld world = new WorldTPWorld(plugin, multiverseWorldName, data);
+                WorldTPWorld world = new WorldTPWorld(plugin, multiverseWorldName);
                 if(world.getName().startsWith(worldGroup)){
                     String worldType = world.getWorldType();
                     if(worldType.equals("overworld")){

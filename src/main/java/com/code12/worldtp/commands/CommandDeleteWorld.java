@@ -3,6 +3,7 @@ package com.code12.worldtp.commands;
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.apimethods.WorldTPWorldGroup;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,11 +13,10 @@ import java.util.List;
 
 public class CommandDeleteWorld implements CommandExecutor {
     WorldTP plugin;
-    public DataManager data;
+    public DataManager data = References.data;
 
-    public CommandDeleteWorld(WorldTP plugin, DataManager data) {
+    public CommandDeleteWorld(WorldTP plugin) {
         this.plugin = plugin;
-        this.data = data;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CommandDeleteWorld implements CommandExecutor {
         String world = args[0];
         String displayName = data.getConfig().getString("menuGroupID." + world + ".displayName");
 
-        WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(plugin, data, world, displayName);
+        WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(plugin, world, displayName);
 
         worldTPWorldGroup.deleteWorldGroup(sender);
 

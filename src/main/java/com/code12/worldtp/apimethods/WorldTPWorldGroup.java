@@ -2,6 +2,7 @@ package com.code12.worldtp.apimethods;
 
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import java.util.List;
 public class WorldTPWorldGroup {
     //Variables
     WorldTP plugin;
-    private DataManager data;
+    public DataManager data = References.data;
 
     private String name;
     private String displayName;
@@ -20,10 +21,8 @@ public class WorldTPWorldGroup {
     private Boolean adminOnly = false;
 
 
-    public WorldTPWorldGroup(WorldTP plugin, DataManager data, String name, String displayName){
-
+    public WorldTPWorldGroup(WorldTP plugin, String name, String displayName){
         this.plugin = plugin;
-        this.data = data;
 
         this.name = name;
         this.displayName = displayName;

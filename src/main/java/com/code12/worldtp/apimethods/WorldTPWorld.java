@@ -2,21 +2,21 @@ package com.code12.worldtp.apimethods;
 
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
+import com.code12.worldtp.files.References;
 
 import java.util.List;
 
 public class WorldTPWorld {
     //Variables
     WorldTP plugin;
-    private DataManager data;
+    public DataManager data = References.data;
 
     private String name;
     private String worldType;
     private String worldGroup;
 
-    public WorldTPWorld(WorldTP plugin, String worldName, DataManager data){
+    public WorldTPWorld(WorldTP plugin, String worldName){
         this.plugin = plugin;
-        this.data = data;
         this.name = worldName;
     }
 
