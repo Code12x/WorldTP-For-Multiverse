@@ -1,7 +1,7 @@
 package com.code12.worldtp.listeners;
 
 import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.apimethods.WorldTPWorld;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;

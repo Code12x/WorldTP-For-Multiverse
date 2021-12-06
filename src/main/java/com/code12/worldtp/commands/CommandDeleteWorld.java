@@ -1,15 +1,13 @@
 package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.apimethods.WorldTPWorldGroup;
+import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import java.util.List;
 
 public class CommandDeleteWorld implements CommandExecutor {
     WorldTP plugin;

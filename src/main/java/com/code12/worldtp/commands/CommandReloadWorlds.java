@@ -1,8 +1,8 @@
 package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.apimethods.WorldTPWorld;
-import com.code12.worldtp.apimethods.WorldTPWorldGroup;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
