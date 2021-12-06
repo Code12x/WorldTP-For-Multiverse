@@ -1,4 +1,4 @@
-package com.code12.worldtp.apimethods;
+package com.code12.worldtp.worldtpobjects;
 
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
