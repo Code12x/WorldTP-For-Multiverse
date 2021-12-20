@@ -6,7 +6,7 @@
 
     <groupId>com.code12</groupId>
     <artifactId>WorldTP</artifactId>
-    <version>2.1</version>
+    <version>1.2.3.1</version>
     <packaging>jar</packaging>
 
     <name>WorldTP</name>
