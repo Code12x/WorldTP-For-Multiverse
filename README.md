@@ -2,7 +2,7 @@
 
 Native Minecraft Version: 1.17
 
-Tested Minecraft Versions: 1.17
+Tested Minecraft Versions: 1.17, 1.18
 
 
 ## __About:__
