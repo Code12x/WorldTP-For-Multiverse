@@ -44,6 +44,7 @@ public class CommandSetHome implements CommandExecutor {
         String worldGroupName = world.getWorldGroup();
 
         if(!config.getConfig().getBoolean(worldGroupName + ".Home_Teleporting")){
+            sender.sendMessage(ChatColor.YELLOW + "You cannot set homes in this world!");
             return true;
         }
 
