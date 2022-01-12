@@ -2,6 +2,7 @@ package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.apimethods.WorldTPWorld;
+import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ public class CommandSetHome implements CommandExecutor {
     WorldTP plugin;
 
     public DataManager data = References.data;
+    public ConfigManager config = References.config;
 
     public CommandSetHome(WorldTP plugin) {
         this.plugin = plugin;
@@ -32,6 +34,7 @@ public class CommandSetHome implements CommandExecutor {
             sender.sendMessage(ChatColor.YELLOW + "Only players can run this command.");
             return true;
         }
+
         Player player = (Player) sender;
         String playerName = player.getName();
         Location loc = player.getLocation();
@@ -39,6 +42,10 @@ public class CommandSetHome implements CommandExecutor {
         WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
 
         String worldGroupName = world.getWorldGroup();
+
+        if(!config.getConfig().getBoolean(worldGroupName + ".Home_Teleporting")){
+            return true;
+        }
 
         data.getConfig().set("playerLocations." + playerName + "." + worldGroupName + "_HOME", loc);
 
