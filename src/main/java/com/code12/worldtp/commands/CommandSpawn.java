@@ -1,9 +1,10 @@
 package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,10 +40,14 @@ public class CommandSpawn implements CommandExecutor {
         WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
         String worldGroup = world.getWorldGroup();
 
+        MultiverseCore core = References.core;
+
         if(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint") != null){
-            player.teleport(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint"));
+            Location location = data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint");
+            player.teleport(location);
         }else{
-            player.teleport(Bukkit.getWorld(worldGroup).getSpawnLocation());
+            Location location = Bukkit.getWorld(worldGroup).getSpawnLocation();
+            player.teleport(location);
         }
 
         Location loc = player.getLocation();

@@ -38,7 +38,7 @@ public class CommandReloadWorlds implements CommandExecutor {
             return true;
         }
 
-        MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+        MultiverseCore core = References.core;
         MVWorldManager mvWorldManager = core.getMVWorldManager();
 
         Collection<MultiverseWorld> multiverseWorldList = mvWorldManager.getMVWorlds();
