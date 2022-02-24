@@ -44,7 +44,6 @@ public class InventoryListener implements Listener {
                         Boolean spawn = config.getConfig().getBoolean(menuGroup + ".Spawn_Teleporting");
                         Boolean nether = config.getConfig().getBoolean(menuGroup + ".Nether_Teleporting");
                         Boolean end = config.getConfig().getBoolean(menuGroup + ".End_Teleporting");
-                        Boolean home = config.getConfig().getBoolean(menuGroup + ".Home_Teleporting");
 
                         String worldToLeaveName = player.getWorld().getName();
                         WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
@@ -60,7 +59,7 @@ public class InventoryListener implements Listener {
                         Location locationToTP = null;
 
 
-                        if(spawn || nether || end || home){
+                        if(spawn || nether || end){
 
 
                             event.getView().close();
@@ -73,9 +72,6 @@ public class InventoryListener implements Listener {
                             }
                             if (end) {
                                 dimensionChoice.addItem(newItem("END_STONE", menuGroup + " End"));
-                            }
-                            if (home) {
-                                dimensionChoice.addItem(newItem("RED_BED", menuGroup + " Home"));
                             }
                             dimensionChoice.addItem(newItem("LEATHER_BOOTS", menuGroup + " Resume"));
 
@@ -163,14 +159,6 @@ public class InventoryListener implements Listener {
                                 return;
                             }
                             locationToTP = Bukkit.getWorld(data.getConfig().getString("worldGroup." + menuGroup + ".the_end")).getSpawnLocation();
-
-                        } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " Home")) {
-                            if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup + "_HOME") == null) {
-                                player.sendMessage(ChatColor.YELLOW + "That place does not exist.");
-                                event.setCancelled(true);
-                                return;
-                            }
-                            locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup + "_HOME");
 
                         } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " Resume")) {
                             if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup) != null) {

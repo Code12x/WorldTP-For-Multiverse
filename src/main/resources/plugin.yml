@@ -42,14 +42,6 @@ commands:
     description: Removes the WorldTP World Spawn Point for the world that the player is in when the command is run.
     usage: /<command>
     permission: worldtp.removeworldtpworldspawnpoint
-  sethome:
-    description: Sets the players home for that world where the player is when running the command.
-    usage: /<command>
-    permission: worldtp.sethome
-  home:
-    description: Teleports the player who ran the command to his home if he has one set.
-    usage: /<command>
-    permission: worldtp.home
   spawn:
     description: Teleports the player to spawn of the world he is in.
     usage: /<command>

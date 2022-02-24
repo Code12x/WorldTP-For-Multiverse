@@ -111,9 +111,6 @@ public class CommandReloadWorlds implements CommandExecutor {
         if(config.getConfig().get(worldName + ".End_Teleporting") == null){
             config.getConfig().set(worldName + ".End_Teleporting", false);
         }
-        if(config.getConfig().get(worldName + ".Home_Teleporting") == null){
-            config.getConfig().set(worldName + ".Home_Teleporting", false);
-        }
         config.saveConfig();
     }
 }
