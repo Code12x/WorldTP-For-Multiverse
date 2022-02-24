@@ -46,8 +46,6 @@ public final class WorldTP extends JavaPlugin {
         getCommand("setworldtpworldspawnpoint").setExecutor(new CommandSetWorldTPWorldSpawnPoint(this)); //admins only
         getCommand("removelobby").setExecutor(new CommandRemoveLobby(this)); //admins only
         getCommand("removeworldtpworldspawnpoint").setExecutor(new CommandRemoveWorldTPWorldSpawnPoint(this)); //admins only
-        getCommand("sethome").setExecutor(new CommandSetHome(this));
-        getCommand("home").setExecutor(new CommandHome(this));
         getCommand("spawn").setExecutor(new CommandSpawn(this));
     }
 

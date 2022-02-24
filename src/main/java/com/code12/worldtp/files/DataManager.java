@@ -42,7 +42,7 @@ public class DataManager {
 
     public void saveConfig(){
         if(this.dataConfig == null || this.configFile == null) {
-            plugin.getLogger().info("this.dataConfig == null || this.configFile == null");
+            plugin.getLogger().warning("this.dataConfig == null || this.configFile == null");
             return;
         }
 
