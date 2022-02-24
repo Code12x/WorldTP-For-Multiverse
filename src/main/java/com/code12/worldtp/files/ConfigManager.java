@@ -43,7 +43,7 @@ public class ConfigManager {
 
     public void saveConfig(){
         if(this.configConfig == null || this.configFile == null) {
-            plugin.getLogger().info("this.configConfig == null || this.configFile == null");
+            plugin.getLogger().warning("this.configConfig == null || this.configFile == null");
             return;
         }
 

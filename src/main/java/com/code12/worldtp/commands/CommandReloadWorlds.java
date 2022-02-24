@@ -1,8 +1,8 @@
 package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.apimethods.WorldTPWorld;
-import com.code12.worldtp.apimethods.WorldTPWorldGroup;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
@@ -38,7 +38,7 @@ public class CommandReloadWorlds implements CommandExecutor {
             return true;
         }
 
-        MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+        MultiverseCore core = References.core;
         MVWorldManager mvWorldManager = core.getMVWorldManager();
 
         Collection<MultiverseWorld> multiverseWorldList = mvWorldManager.getMVWorlds();
@@ -110,9 +110,6 @@ public class CommandReloadWorlds implements CommandExecutor {
         }
         if(config.getConfig().get(worldName + ".End_Teleporting") == null){
             config.getConfig().set(worldName + ".End_Teleporting", false);
-        }
-        if(config.getConfig().get(worldName + ".Home_Teleporting") == null){
-            config.getConfig().set(worldName + ".Home_Teleporting", false);
         }
         config.saveConfig();
     }

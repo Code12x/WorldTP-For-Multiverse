@@ -9,9 +9,11 @@ Tested Minecraft Versions: 1.17, 1.18
 
 I believe in making server management easy for the admins, and having a good experience for the players. WorldTP does this by making it so the admins only need to run one command to setup the plugin*. WorldTP also provides a good player experience by using a GUI menu for the players to teleport to other worlds in your server.
 
-WorldTP uses the Multiverse-Core API AND the Multiveres-inventories api, so you MUST HAVE "Multiverse-Core" AND "Multiverse-Inventories" for this plugin to work. Multiverse-NetherPortals is also HIGHLY recommended to have installed on your server or some aspects of the plugin may not work on your server.
+WorldTP uses the Multiverse-Core API, so you MUST HAVE "Multiverse-Core" for this plugin to work. Multiverse-Inventories and Multiverse-NetherPortals are also HIGHLY recommended to have installed on your server or some aspects of the plugin may not work properly on your server.
 
 [!] NOTICE! This plugin is designed for SMPs in mind. In order for dimensions to properly link for this plugin, dimensions must follow the standard world naming format. (world, world_nether, world_the_end) Though, you CAN have a stand-alone overworld dimension that will show up on the menu. You CANNOT have a stand-alone nether or end dimensions in the menu.
+
+[!] NOTICE! If you have a version from before 1.2 (so you don't have the option to teleport to specific dimensions with the WorldTP menu), and you want to update the plugin to a later version, uninstall the original one by deleting the WorldTP.jar and WorldTP folder in the plugins folder on your server. Then install the new version of WorldTP. This is so that the data will be stored in a separate file (data.yml) instead of being stored in the config.yml. After 1.2, the config.yml file contains options to customize how the WorldTP menu works.
 
 *several more commands to customize the display of the worlds on the menu, depending on how many worlds are on your server.
 
@@ -107,24 +109,6 @@ WorldTP uses the Multiverse-Core API AND the Multiveres-inventories api, so you 
     usage: /<command>
     
     permission: worldtp.removeworldtpworldspawnpoint
-    
-
-  __sethome:__
-  
-    description: Sets the players home for that world where the player is when running the command.
-    
-    usage: /<command>
-    
-    permission: worldtp.sethome
-    
-
-  __home:__
-  
-    description: Teleports the player who ran the command to his home if he has one set.
-    
-    usage: /<command>
-    
-    permission: worldtp.home
     
 
   __spawn:__
