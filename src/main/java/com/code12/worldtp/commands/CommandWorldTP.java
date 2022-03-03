@@ -31,11 +31,13 @@ public class CommandWorldTP implements CommandExecutor {
             }
 
             if(player.hasPermission("worldtp.worldtp")){
-                AdvancedWorldTPMenu advancedMenu = new AdvancedWorldTPMenu(plugin);
-                player.openInventory(advancedMenu.tpMenu);
+//                AdvancedWorldTPMenu advancedMenu = new AdvancedWorldTPMenu(plugin);
+//                player.openInventory(advancedMenu.tpMenu);
+
             }else{
-                WorldTPMenu menu = new WorldTPMenu(plugin);
-                player.openInventory(menu.tpMenu);
+//                WorldTPMenu menu = new WorldTPMenu(plugin);
+//                player.openInventory(menu.tpMenu);
+
             }
         }
         return true;
