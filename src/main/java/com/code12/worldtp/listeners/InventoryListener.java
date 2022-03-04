@@ -1,3 +1,4 @@
+/*
 package com.code12.worldtp.listeners;
 
 import com.code12.worldtp.WorldTP;
@@ -48,11 +49,6 @@ public class InventoryListener implements Listener {
                         String worldToLeaveName = player.getWorld().getName();
                         WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
                         String worldGroupToLeave = worldToLeave.getWorldGroup();
-
-
-                        String worldToEnterName;
-                        WorldTPWorld worldToEnter;
-                        String worldToEnterWorldGroup;
 
                         Location playerLocation = player.getLocation();
 
@@ -209,3 +205,4 @@ public class InventoryListener implements Listener {
         return item;
     }
 }
+*/
