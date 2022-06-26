@@ -1,6 +1,7 @@
 package com.code12.worldtp.commands;
 
 import com.code12.worldtp.WorldTP;
+import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
@@ -16,6 +17,7 @@ public class CommandSpawn implements CommandExecutor {
     WorldTP plugin;
 
     public DataManager data = References.data;
+    public ConfigManager config = References.config;
 
     public CommandSpawn(WorldTP plugin) {
         this.plugin = plugin;
@@ -38,6 +40,11 @@ public class CommandSpawn implements CommandExecutor {
         String playerName = player.getName();
         WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
         String worldGroup = world.getWorldGroup();
+
+        if(!config.getConfig().getBoolean(worldGroup + ".Spawn_Teleporting")){
+            sender.sendMessage(ChatColor.YELLOW + "You can not teleport to spawn in this world.");
+            return true;
+        }
 
         if(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint") != null){
             Location location = data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint");
