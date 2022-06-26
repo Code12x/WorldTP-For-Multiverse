@@ -31,11 +31,6 @@ public class CommandSpawn implements CommandExecutor {
             return true;
         }
 
-        if(!config.getConfig().getBoolean("Spawn_Teleporting")){
-            sender.sendMessage(ChatColor.YELLOW + "You can not teleport to spawn in this world.");
-            return true;
-        }
-
         if(!(sender instanceof Player)){
             sender.sendMessage(ChatColor.YELLOW + "Only players can run this command.");
             return true;
@@ -45,6 +40,11 @@ public class CommandSpawn implements CommandExecutor {
         String playerName = player.getName();
         WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
         String worldGroup = world.getWorldGroup();
+
+        if(!config.getConfig().getBoolean(worldGroup + ".Spawn_Teleporting")){
+            sender.sendMessage(ChatColor.YELLOW + "You can not teleport to spawn in this world.");
+            return true;
+        }
 
         if(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint") != null){
             Location location = data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint");
