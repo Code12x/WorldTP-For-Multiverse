@@ -1,4 +1,4 @@
-/*
+
 package com.code12.worldtp.listeners;
 
 import com.code12.worldtp.WorldTP;
@@ -18,15 +18,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class InventoryListener implements Listener {
-    WorldTP plugin;
-
-    public DataManager data = References.data;
-    public ConfigManager config = References.config;
-
-    public InventoryListener(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+public class InventoryListener implements Listener {/*
+    private final WorldTP plugin = References.plugin;
+    private final DataManager data = References.data;
+    private final ConfigManager config = References.config;
 
     @EventHandler
     public void onPlayerInventoryInteractEvent(InventoryClickEvent event) {
@@ -203,6 +198,6 @@ public class InventoryListener implements Listener {
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(itemMeta);
         return item;
-    }
+    }*/
 }
-*/
+

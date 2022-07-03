@@ -19,14 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandWorldTP implements CommandExecutor {
-    WorldTP plugin;
 
-    public DataManager data = References.data;
-    public ConfigManager config = References.config;
-
-    public CommandWorldTP(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+    private final WorldTP plugin = References.plugin;
+    private final DataManager data = References.data;
+    private final ConfigManager config = References.config;
 
     // the command
     @Override
@@ -92,11 +88,11 @@ public class CommandWorldTP implements CommandExecutor {
                     ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
 
                     if(data.getConfig().getItemStack("worldID." + world + ".iten") != null){
-                        itemStack = data.getConfig().getItemStack("worldID." + world + ".iten");
+                        itemStack = data.getConfig().getItemStack("worldID." + world + ".item");
                     }
 
-                    String worldToLeaveName = player.getWorld().getName();
-                    WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
+                    World playerWorld = player.getWorld();
+                    WorldTPWorld worldToLeave = new WorldTPWorld(playerWorld);
                     String worldGroupToLeave = worldToLeave.getWorldGroup();
 
                     Boolean spawn = config.getConfig().getBoolean(world + ".Spawn_Teleporting");

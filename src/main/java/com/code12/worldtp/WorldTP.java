@@ -13,11 +13,14 @@ public final class WorldTP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Set plugin
+        References.setPlugin(this);
+
         // config.yml
-        References.loadConfig(this);
+        References.loadConfig();
 
         // data.yml
-        References.loadData(this);
+        References.loadData();
 
         // Register Events
         registerEvents();
@@ -37,30 +40,22 @@ public final class WorldTP extends JavaPlugin {
     }
 
     private void loadCommands() {
-        getCommand("worldtp").setExecutor(new CommandWorldTP(this)); // anyone can access
-        getCommand("editworld").setExecutor(new CommandEditWorld(this)); // only admins
-        getCommand("deleteworld").setExecutor(new CommandDeleteWorld(this)); // only admins
-        getCommand("listworlds").setExecutor(new CommandListWorlds(this)); // anyone
-        getCommand("reloadworlds").setExecutor(new CommandReloadWorlds(this));// only admins
-        getCommand("setlobby").setExecutor(new CommandSetLobby(this)); // only admins
-        getCommand("setworldtpworldspawnpoint").setExecutor(new CommandSetWorldTPWorldSpawnPoint(this)); //admins only
-        getCommand("removelobby").setExecutor(new CommandRemoveLobby(this)); //admins only
-        getCommand("removeworldtpworldspawnpoint").setExecutor(new CommandRemoveWorldTPWorldSpawnPoint(this)); //admins only
-        getCommand("spawn").setExecutor(new CommandSpawn(this));
+        getCommand("worldtp").setExecutor(new CommandWorldTP());
+        getCommand("editworld").setExecutor(new CommandEditWorld());
+        getCommand("deleteworld").setExecutor(new CommandDeleteWorld());
+        getCommand("listworlds").setExecutor(new CommandListWorlds());
+        getCommand("reloadworlds").setExecutor(new CommandReloadWorlds());
+        getCommand("setlobby").setExecutor(new CommandSetLobby());
+        getCommand("setworldtpworldspawnpoint").setExecutor(new CommandSetWorldTPWorldSpawnPoint());
+        getCommand("removelobby").setExecutor(new CommandRemoveLobby());
+        getCommand("removeworldtpworldspawnpoint").setExecutor(new CommandRemoveWorldTPWorldSpawnPoint());
+        getCommand("spawn").setExecutor(new CommandSpawn());
     }
 
     private void registerEvents() {
         // Plugin manager
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new InventoryListener(this), this);
-        pm.registerEvents(new PlayerJoinListener(this), this);
-    }
-
-    private void loadConfig() {
-        References.config = new ConfigManager(this);
-    }
-
-    private void loadData() {
-        References.data = new DataManager(this);
+        //pm.registerEvents(new InventoryListener(), this);
+        pm.registerEvents(new PlayerJoinListener(), this);
     }
 }

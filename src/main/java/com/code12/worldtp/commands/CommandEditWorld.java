@@ -12,12 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 public class CommandEditWorld implements CommandExecutor {
-    WorldTP plugin;
-    public DataManager data = References.data;
-
-    public CommandEditWorld(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+    private final WorldTP plugin = References.plugin;
+    private final DataManager data = References.data;
 
     // The command
     @Override
@@ -36,7 +32,7 @@ public class CommandEditWorld implements CommandExecutor {
             String displayName = args[1];
             ItemStack displayItem = new ItemStack(Material.getMaterial(args[2].toUpperCase()));
             String adminOnly = args[3];
-            WorldTPWorldGroup worldToRegister = new WorldTPWorldGroup(plugin, world, displayName);
+            WorldTPWorldGroup worldToRegister = new WorldTPWorldGroup(world, displayName);
             worldToRegister.setItem(displayItem);
             if(adminOnly.equalsIgnoreCase("true")){
                 worldToRegister.setAdminOnly(true);

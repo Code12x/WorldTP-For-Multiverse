@@ -12,6 +12,7 @@ import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,13 +23,9 @@ import java.util.Collection;
 
 public class CommandReloadWorlds implements CommandExecutor {
 
-    WorldTP plugin;
-    public DataManager data = References.data;
-    public ConfigManager config = References.config;
-
-    public CommandReloadWorlds(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+    private final WorldTP plugin = References.plugin;
+    private final DataManager data = References.data;
+    private final ConfigManager config = References.config;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -50,11 +47,11 @@ public class CommandReloadWorlds implements CommandExecutor {
 
         ArrayList<String> menuGroupList = new ArrayList<>();
         for(MultiverseWorld multiverseWorld : multiverseWorldList){
-            String world = multiverseWorld.getName();
-            WorldTPWorld worldTPWorld = new WorldTPWorld(plugin, world);
+            World world = Bukkit.getWorld(multiverseWorld.getName());
+            WorldTPWorld worldTPWorld = new WorldTPWorld(world);
 
             if(worldTPWorld.getWorldType().equals("overworld")){
-                menuGroupList.add(world);
+                menuGroupList.add(world.getName());
             }
         }
 
@@ -69,7 +66,7 @@ public class CommandReloadWorlds implements CommandExecutor {
                 displayName = data.getConfig().getString("menuGroupID." + worldGroup + ".displayName");
             }
             Boolean adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
-            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(plugin, worldGroup, displayName);
+            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(worldGroup, displayName);
             worldTPWorldGroup.setItem(item);
             worldTPWorldGroup.setAdminOnly(adminOnly);
             worldTPWorldGroup.registerWorldGroup();
@@ -78,8 +75,7 @@ public class CommandReloadWorlds implements CommandExecutor {
             setConfig(worldGroup);
 
             for(MultiverseWorld multiverseWorld : multiverseWorldList){
-                String multiverseWorldName = multiverseWorld.getName();
-                WorldTPWorld world = new WorldTPWorld(plugin, multiverseWorldName);
+                WorldTPWorld world = new WorldTPWorld(Bukkit.getWorld(multiverseWorld.getName()));
                 if(world.getName().startsWith(worldGroup)){
                     String worldType = world.getWorldType();
                     if(worldType.equals("overworld")){

@@ -1,23 +1,21 @@
 package com.code12.worldtp.worldtpobjects;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import org.bukkit.World;
 
 import java.util.List;
 
 public class WorldTPWorld {
     //Variables
-    WorldTP plugin;
-    public DataManager data = References.data;
+    private final DataManager data = References.data;
 
     private String name;
     private String worldType;
     private String worldGroup;
 
-    public WorldTPWorld(WorldTP plugin, String worldName){
-        this.plugin = plugin;
-        this.name = worldName;
+    public WorldTPWorld(World world){
+        this.name = world.getName();
     }
 
     public String getWorldGroup(){

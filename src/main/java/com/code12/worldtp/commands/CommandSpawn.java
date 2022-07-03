@@ -13,13 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandSpawn implements CommandExecutor {
-    WorldTP plugin;
-
-    public DataManager data = References.data;
-
-    public CommandSpawn(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+    private final WorldTP plugin = References.plugin;
+    private final DataManager data = References.data;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -36,7 +31,7 @@ public class CommandSpawn implements CommandExecutor {
 
         Player player = (Player) sender;
         String playerName = player.getName();
-        WorldTPWorld world = new WorldTPWorld(plugin, player.getWorld().getName());
+        WorldTPWorld world = new WorldTPWorld(player.getWorld());
         String worldGroup = world.getWorldGroup();
 
         if(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint") != null){
@@ -54,5 +49,4 @@ public class CommandSpawn implements CommandExecutor {
 
         return true;
     }
-
 }

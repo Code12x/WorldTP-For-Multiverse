@@ -5,15 +5,20 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import org.bukkit.Bukkit;
 
 public class References {
+    public static WorldTP plugin;
     public static DataManager data;
     public static ConfigManager config;
-    public static MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiver-Core");
+    public static final MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiver-Core");
 
-    public static void loadData(WorldTP plugin){
-        data = new DataManager(plugin);
+    public static void setPlugin(WorldTP p){
+        plugin = p;
     }
 
-    public static void loadConfig(WorldTP plugin){
-        config = new ConfigManager(plugin);
+    public static void loadData(){
+        data = new DataManager();
+    }
+
+    public static void loadConfig(){
+        config = new ConfigManager();
     }
 }

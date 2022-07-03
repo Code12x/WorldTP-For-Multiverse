@@ -10,12 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandDeleteWorld implements CommandExecutor {
-    WorldTP plugin;
-    public DataManager data = References.data;
-
-    public CommandDeleteWorld(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+    private final WorldTP plugin = References.plugin;
+    private final DataManager data = References.data;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -32,7 +28,7 @@ public class CommandDeleteWorld implements CommandExecutor {
         String world = args[0];
         String displayName = data.getConfig().getString("menuGroupID." + world + ".displayName");
 
-        WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(plugin, world, displayName);
+        WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(world, displayName);
 
         worldTPWorldGroup.deleteWorldGroup(sender);
 

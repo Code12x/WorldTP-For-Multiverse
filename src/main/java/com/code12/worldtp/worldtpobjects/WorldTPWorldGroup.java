@@ -1,6 +1,7 @@
 package com.code12.worldtp.worldtpobjects;
 
-import com.code12.worldtp.WorldTP;
+import lombok.Getter;
+import lombok.Setter;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
@@ -12,28 +13,17 @@ import java.util.List;
 
 public class WorldTPWorldGroup {
     //Variables
-    WorldTP plugin;
     public DataManager data = References.data;
 
     private String name;
     private String displayName;
-    private ItemStack item = new ItemStack(Material.GRASS_BLOCK);
-    private Boolean adminOnly = false;
+    @Setter @Getter private ItemStack item = new ItemStack(Material.GRASS_BLOCK);
+    @Setter @Getter private Boolean adminOnly = false;
 
 
-    public WorldTPWorldGroup(WorldTP plugin, String name, String displayName){
-        this.plugin = plugin;
-
+    public WorldTPWorldGroup(String name, String displayName){
         this.name = name;
         this.displayName = displayName;
-    }
-
-    public void setItem(ItemStack item) {
-        this.item = item;
-    }
-
-    public void setAdminOnly(Boolean adminOnly) {
-        this.adminOnly = adminOnly;
     }
 
     public void registerWorldGroup(){
@@ -96,21 +86,5 @@ public class WorldTPWorldGroup {
         data.getConfig().set("menuGroupID." + name + ".admin", adminOnly);
 
         data.saveConfig();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public ItemStack getItem() {
-        return item;
-    }
-
-    public Boolean getAdminOnly() {
-        return adminOnly;
     }
 }
