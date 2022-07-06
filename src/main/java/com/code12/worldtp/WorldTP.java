@@ -3,15 +3,18 @@ package com.code12.worldtp;
 import com.code12.worldtp.commands.*;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.listeners.PlayerJoinListener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WorldTP extends JavaPlugin {
 
+    private static Plugin instance;
+
     @Override
     public void onEnable() {
         // Set plugin
-        References.setPlugin(this);
+        instance = this;
 
         // config.yml
         References.loadConfig();
@@ -31,8 +34,9 @@ public final class WorldTP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("WorldTP has been DISABLED");
         References.data.saveConfig();
+        instance = null;
+        getLogger().info("WorldTP has been DISABLED");
     }
 
     private void loadCommands() {
@@ -52,6 +56,10 @@ public final class WorldTP extends JavaPlugin {
         // Plugin manager
         PluginManager pm = getServer().getPluginManager();
         //pm.registerEvents(new InventoryListener(), this);
-        pm.registerEvents(new PlayerJoinListener(), this);
+        pm.registerEvents(new PlayerJoinListener(), getInstance());
+    }
+
+    public static Plugin getInstance(){
+        return instance;
     }
 }

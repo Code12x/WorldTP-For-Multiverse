@@ -1,6 +1,5 @@
 package com.code12.worldtp.menues;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.Bukkit;
@@ -13,15 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldTPMenu{
-    WorldTP plugin;
-
     public DataManager data = References.data;
 
     public Inventory tpMenu;
 
-    public WorldTPMenu(WorldTP plugin){
-        this.plugin = plugin;
-
+    public WorldTPMenu(){
         List<String> worldList = data.getConfig().getStringList("menuGroupList");
         ArrayList<String> notAdminWorlds = new ArrayList<String>();
 

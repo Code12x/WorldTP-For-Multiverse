@@ -3,6 +3,7 @@ package com.code12.worldtp.files;
 import com.code12.worldtp.WorldTP;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class ConfigManager {
-    private final WorldTP plugin = References.plugin;
+    private final Plugin plugin = WorldTP.getInstance();
     private FileConfiguration configConfig = null;
     private File configFile = null;
 
