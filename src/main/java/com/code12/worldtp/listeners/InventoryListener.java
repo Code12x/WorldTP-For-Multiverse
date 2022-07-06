@@ -2,6 +2,7 @@
 package com.code12.worldtp.listeners;
 
 import com.code12.worldtp.WorldTP;
+import com.code12.worldtp.gui.DimensionsSelectionGui;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
@@ -18,7 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class InventoryListener implements Listener {/*
+public class InventoryListener implements Listener {
     private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
     private final ConfigManager config = References.config;
@@ -41,34 +42,18 @@ public class InventoryListener implements Listener {/*
                         Boolean nether = config.getConfig().getBoolean(menuGroup + ".Nether_Teleporting");
                         Boolean end = config.getConfig().getBoolean(menuGroup + ".End_Teleporting");
 
-                        String worldToLeaveName = player.getWorld().getName();
-                        WorldTPWorld worldToLeave = new WorldTPWorld(plugin, worldToLeaveName);
-                        String worldGroupToLeave = worldToLeave.getWorldGroup();
+                        World worldToLeave = player.getWorld();
+                        WorldTPWorld worldTPWorldToLeave = new WorldTPWorld(worldToLeave);
+                        String worldGroupToLeave = worldTPWorldToLeave.getWorldGroup();
 
                         Location playerLocation = player.getLocation();
 
                         Location locationToTP = null;
 
-
                         if(spawn || nether || end){
+                            DimensionsSelectionGui dimensionsSelectionGui = new DimensionsSelectionGui(worldToLeave);
 
-
-                            event.getView().close();
-                            Inventory dimensionChoice = Bukkit.createInventory(null, 9, "Dimension");
-                            if (spawn) {
-                                dimensionChoice.addItem(newItem("GRASS_BLOCK", menuGroup + " Spawn"));
-                            }
-                            if (nether) {
-                                dimensionChoice.addItem(newItem("NETHERRACK", menuGroup + " Nether"));
-                            }
-                            if (end) {
-                                dimensionChoice.addItem(newItem("END_STONE", menuGroup + " End"));
-                            }
-                            dimensionChoice.addItem(newItem("LEATHER_BOOTS", menuGroup + " Resume"));
-
-                            player.openInventory(dimensionChoice);
-                            return;
-
+                            dimensionsSelectionGui.getGui().show(player);
 
                         }else {
 
@@ -106,7 +91,7 @@ public class InventoryListener implements Listener {/*
                     }
                 }
             }
-        }else if (event.getView().getTitle().contains("Dimension")) {
+        }/*else if (event.getView().getTitle().contains("Dimension")) {
             if (event.getCurrentItem() == null) {
                 return;
             }
@@ -120,7 +105,6 @@ public class InventoryListener implements Listener {/*
                         Location playerLocation = player.getLocation();
 
                         Location locationToTP = null;
-
 
                         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(menuGroup + " Spawn")) {
 
@@ -188,7 +172,7 @@ public class InventoryListener implements Listener {/*
                     }
                 }
             }
-        }
+        }*/
     }
 
     private ItemStack newItem (String material, String name){
@@ -198,6 +182,7 @@ public class InventoryListener implements Listener {/*
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(itemMeta);
         return item;
-    }*/
+    }
+
 }
 

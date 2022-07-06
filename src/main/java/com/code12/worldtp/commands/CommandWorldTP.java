@@ -1,6 +1,5 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
@@ -20,7 +19,6 @@ import java.util.List;
 
 public class CommandWorldTP implements CommandExecutor {
 
-    private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
     private final ConfigManager config = References.config;
 
@@ -35,27 +33,21 @@ public class CommandWorldTP implements CommandExecutor {
                 return true;
             }
 
-            // worlds info
-            Boolean hasAccess = false;
             int numberOfWorlds;
             List<String> worldList = data.getConfig().getStringList("worldList");
 
             if (player.hasPermission("worldtp.worldtp")) {
-                hasAccess = true;
-
                 numberOfWorlds = worldList.size();
             }else {
-                ArrayList<String> notAdminWorlds = new ArrayList<String>();
+                ArrayList<String> notAdminWorlds = new ArrayList<>();
 
                 for(String world : worldList){
                     if(!data.getConfig().getBoolean("worldID." + world + ".admin")){
                         notAdminWorlds.add(world);
                     }
                 }
-
                 numberOfWorlds = notAdminWorlds.size();
             }
-
 
             int rows = 1;
             int slots = 9;
@@ -108,17 +100,17 @@ public class CommandWorldTP implements CommandExecutor {
                         if(spawn || nether || end){
 
                         } else{
+                            if (playerLocation.getWorld().getName().startsWith(world)){
+                                player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
+                                return;
+                            }
+
                             if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + world) != null) {
                                 locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + world);
                             }
 
                             if (data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint") != null) {
                                 locationToTP = data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint");
-                            }
-
-                            if (playerLocation.getWorld().getName().startsWith(world)){
-                                player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
-                                return;
                             }
 
                             if(locationToTP == null) {

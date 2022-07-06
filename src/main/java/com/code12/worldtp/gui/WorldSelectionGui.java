@@ -1,6 +1,7 @@
 package com.code12.worldtp.gui;
 
-public class WorldSelectionGui {
+import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 
+public class WorldSelectionGui {
 
 }

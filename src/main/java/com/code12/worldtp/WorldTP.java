@@ -1,10 +1,7 @@
 package com.code12.worldtp;
 
 import com.code12.worldtp.commands.*;
-import com.code12.worldtp.files.ConfigManager;
-import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
-import com.code12.worldtp.listeners.InventoryListener;
 import com.code12.worldtp.listeners.PlayerJoinListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +27,6 @@ public final class WorldTP extends JavaPlugin {
 
         // Finish Startup
         getLogger().info("WorldTP has been ENABLED");
-
     }
 
     @Override
