@@ -1,11 +1,10 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
-import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
@@ -23,7 +22,6 @@ import java.util.Collection;
 
 public class CommandReloadWorlds implements CommandExecutor {
 
-    private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
     private final ConfigManager config = References.config;
 
