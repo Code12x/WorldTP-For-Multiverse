@@ -11,11 +11,13 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class ConfigManager {
-    private final WorldTP plugin = References.plugin;
+    private WorldTP plugin;
     private FileConfiguration configConfig = null;
     private File configFile = null;
 
-    public ConfigManager(){
+    public ConfigManager(WorldTP plugin){
+        this.plugin = plugin;
+
         // saves/initializes the config
         saveDefaultConfig();
     }

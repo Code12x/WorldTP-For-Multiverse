@@ -10,14 +10,11 @@ public final class WorldTP extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Set plugin
-        References.setPlugin(this);
-
         // config.yml
-        References.loadConfig();
+        References.loadConfig(this);
 
         // data.yml
-        References.loadData();
+        References.loadData(this);
 
         // Register Events
         registerEvents();
