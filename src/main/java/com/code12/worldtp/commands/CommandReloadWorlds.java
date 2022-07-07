@@ -23,7 +23,6 @@ import java.util.Collection;
 
 public class CommandReloadWorlds implements CommandExecutor {
 
-    private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
     private final ConfigManager config = References.config;
 
