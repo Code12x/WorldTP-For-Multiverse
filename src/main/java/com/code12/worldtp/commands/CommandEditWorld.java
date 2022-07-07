@@ -1,9 +1,8 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 public class CommandEditWorld implements CommandExecutor {
-    private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
 
     // The command

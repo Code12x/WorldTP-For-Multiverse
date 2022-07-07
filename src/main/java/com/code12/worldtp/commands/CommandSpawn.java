@@ -1,6 +1,5 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
@@ -13,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandSpawn implements CommandExecutor {
-    private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
 
     @Override

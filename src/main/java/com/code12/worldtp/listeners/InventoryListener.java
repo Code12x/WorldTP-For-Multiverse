@@ -1,18 +1,16 @@
 
 package com.code12.worldtp.listeners;
 
-import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.gui.DimensionsSelectionGui;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.DimensionsSelectionGui;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class InventoryListener implements Listener {
-    private final WorldTP plugin = References.plugin;
     private final DataManager data = References.data;
     private final ConfigManager config = References.config;
 
