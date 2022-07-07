@@ -13,20 +13,32 @@ public final class WorldTP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        getLogger().info("DEBUG 1.1");
         // Set plugin
         instance = this;
+
+        getLogger().info("DEBUG 1.2");
 
         // config.yml
         References.loadConfig();
 
+        getLogger().info("DEBUG 1.3");
+
         // data.yml
         References.loadData();
+
+        getLogger().info("DEBUG 1.4");
 
         // Register Events
         registerEvents();
 
+        getLogger().info("DEBUG 1.5");
+
         // getting all the player commands
         loadCommands();
+
+        getLogger().info("DEBUG 1.6");
 
         // Finish Startup
         getLogger().info("WorldTP has been ENABLED");
