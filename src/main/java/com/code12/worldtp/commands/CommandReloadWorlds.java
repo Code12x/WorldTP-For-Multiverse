@@ -1,11 +1,10 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
-import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
@@ -29,13 +28,22 @@ public class CommandReloadWorlds implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 
+        //TODO Debug here
+        sender.sendMessage("DEBUG01");
+
         if(!sender.hasPermission("worldtp.reloadworlds")){
             sender.sendMessage(ChatColor.YELLOW + "You don't have the necessary permission to use this command.");
             return true;
         }
 
+        //TODO Debug here
+        sender.sendMessage("DEBUG 02");
         MultiverseCore core = References.core;
+        //TODO Debug here
+        sender.sendMessage("DEBUG 03");
         MVWorldManager mvWorldManager = core.getMVWorldManager();
+        //TODO DEBUG HERE
+        sender.sendMessage("DEBUG 04");
 
         Collection<MultiverseWorld> multiverseWorldList = mvWorldManager.getMVWorlds();
 

@@ -9,19 +9,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
 public class AdvancedWorldTPMenu {
-    WorldTP plugin;
-
+    private final Plugin plugin = WorldTP.getInstance();
     public DataManager data = References.data;
 
     public Inventory tpMenu;
 
-    public AdvancedWorldTPMenu(WorldTP plugin) {
-        this.plugin = plugin;
-
+    public AdvancedWorldTPMenu() {
         int numberOfWorlds = data.getConfig().getStringList("menuGroupList").size();
         int numberOfSlots = 9;
 
