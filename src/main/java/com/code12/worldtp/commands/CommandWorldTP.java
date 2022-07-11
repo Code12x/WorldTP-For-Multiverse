@@ -3,6 +3,8 @@ package com.code12.worldtp.commands;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.menues.AdvancedWorldTPMenu;
+import com.code12.worldtp.menues.WorldTPMenu;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -28,20 +30,20 @@ public class CommandWorldTP implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (data.getConfig().getStringList("worldList").isEmpty()) {
+            if (data.getConfig().getStringList("menuGroupList").isEmpty()) {
                 player.sendMessage("The worlds have not been registered on WorldTP. To register the worlds, have an admin run the command /reloadworlds.");
                 return true;
             }
 
             int numberOfWorlds;
-            List<String> worldList = data.getConfig().getStringList("worldList");
+            List<String> menuGroupList = data.getConfig().getStringList("menuGroupList");
 
             if (player.hasPermission("worldtp.worldtp")) {
-                numberOfWorlds = worldList.size();
+                numberOfWorlds = menuGroupList.size();
             }else {
                 ArrayList<String> notAdminWorlds = new ArrayList<>();
 
-                for(String world : worldList){
+                for(String world : menuGroupList){
                     if(!data.getConfig().getBoolean("worldID." + world + ".admin")){
                         notAdminWorlds.add(world);
                     }
@@ -59,11 +61,9 @@ public class CommandWorldTP implements CommandExecutor {
 
             // gui info
             ChestGui gui;
-            Boolean hasPages = false;
 
             if(rows >= 9) {
                 gui = new ChestGui(9, "World Menu");
-                hasPages = true;
             } else {
                 gui = new ChestGui(rows, "World Menu");
             }
@@ -71,67 +71,62 @@ public class CommandWorldTP implements CommandExecutor {
             gui.setOnGlobalClick(event -> event.setCancelled(true));
 
             // main task
-            if(hasPages){
-                //TODO: Make the configuration for when there are more than 36 worlds
-            } else {
-                OutlinePane mainPain = new OutlinePane(0, 0, 9, rows);
+            OutlinePane mainPain = new OutlinePane(0, 0, 9, rows);
 
-                for (String world : worldList) {
-                    ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
+            for (String world : menuGroupList) {
+                ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
 
-                    if(data.getConfig().getItemStack("worldID." + world + ".iten") != null){
-                        itemStack = data.getConfig().getItemStack("worldID." + world + ".item");
-                    }
-
-                    World playerWorld = player.getWorld();
-                    WorldTPWorld worldToLeave = new WorldTPWorld(playerWorld);
-                    String worldGroupToLeave = worldToLeave.getWorldGroup();
-
-                    Boolean spawn = config.getConfig().getBoolean(world + ".Spawn_Teleporting");
-                    Boolean nether = config.getConfig().getBoolean(world + ".Nether_Teleporting");
-                    Boolean end = config.getConfig().getBoolean(world + ".End_Teleporting");
-
-                    Location playerLocation = player.getLocation();
-
-                    GuiItem item = new GuiItem(itemStack, event -> {
-
-                        Location locationToTP = null;
-
-                        if(spawn || nether || end){
-
-                        } else{
-                            if (playerLocation.getWorld().getName().startsWith(world)){
-                                player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
-                                return;
-                            }
-
-                            if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + world) != null) {
-                                locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + world);
-                            }
-
-                            if (data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint") != null) {
-                                locationToTP = data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint");
-                            }
-
-                            if(locationToTP == null) {
-                                if (player.getBedSpawnLocation() != null) {
-                                    locationToTP = player.getBedSpawnLocation();
-                                } else{
-                                    World bukkitWorld = Bukkit.getWorld(world);
-                                    locationToTP = bukkitWorld.getSpawnLocation();
-                                }
-                            }
-                            player.teleport(locationToTP);
-                        }
-                    });
-
-                    mainPain.addItem(item);
+                if(data.getConfig().getItemStack("worldID." + world + ".item") != null){
+                    itemStack = data.getConfig().getItemStack("worldID." + world + ".item");
                 }
 
-                gui.update();
-                gui.show(player);
+                World playerWorld = player.getWorld();
+                WorldTPWorld worldToLeave = new WorldTPWorld(playerWorld);
+                String worldGroupToLeave = worldToLeave.getWorldGroup();
+
+                Boolean spawn = config.getConfig().getBoolean(world + ".Spawn_Teleporting");
+                Boolean nether = config.getConfig().getBoolean(world + ".Nether_Teleporting");
+                Boolean end = config.getConfig().getBoolean(world + ".End_Teleporting");
+
+                Location playerLocation = player.getLocation();
+
+                GuiItem item = new GuiItem(itemStack, event -> {
+
+                    Location locationToTP = null;
+
+                    if(spawn || nether || end){
+
+                    } else{
+                        if (playerLocation.getWorld().getName().startsWith(world)){
+                            player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
+                            return;
+                        }
+
+                        if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + world) != null) {
+                            locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + world);
+                        }
+
+                        if (data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint") != null) {
+                            locationToTP = data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint");
+                        }
+
+                        if(locationToTP == null) {
+                            if (player.getBedSpawnLocation() != null) {
+                                locationToTP = player.getBedSpawnLocation();
+                            } else{
+                                World bukkitWorld = Bukkit.getWorld(world);
+                                locationToTP = bukkitWorld.getSpawnLocation();
+                            }
+                        }
+                        player.teleport(locationToTP);
+                    }
+                });
+
+                mainPain.addItem(item);
             }
 
+            gui.update();
+            gui.show(player);
         }
         return true;
     }

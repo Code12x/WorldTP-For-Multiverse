@@ -48,7 +48,7 @@ public class InventoryListener implements Listener {
                         Location locationToTP = null;
 
                         if(spawn || nether || end){
-                            DimensionsSelectionGui dimensionsSelectionGui = new DimensionsSelectionGui(worldToLeave);
+                            DimensionsSelectionGui dimensionsSelectionGui = new DimensionsSelectionGui(Bukkit.getWorld(menuGroup), player);
 
                             dimensionsSelectionGui.getGui().show(player);
 

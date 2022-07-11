@@ -1,5 +1,6 @@
 package com.code12.worldtp.gui;
 
+import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginManager;
 
 public class DimensionsSelectionGui {
     private final ConfigManager config = References.config;
@@ -21,7 +23,7 @@ public class DimensionsSelectionGui {
     @Getter
     public ChestGui gui;
 
-    public DimensionsSelectionGui(World worldGroup){
+    public DimensionsSelectionGui(World worldGroup, Player p){
         String worldGroupName = worldGroup.getName();
 
         gui = new ChestGui(1, "Dimension");
@@ -38,6 +40,16 @@ public class DimensionsSelectionGui {
         if(allowEnd) numberOfDimensions ++;
 
         int numberOfDimensionsLeft = numberOfDimensions;
+
+        p.sendMessage(ChatColor.RED + "***** DEBUG *****" + ChatColor.RESET + "\n" +
+                "worldGroupName: " + worldGroupName + "\n" +
+                "-------------------\n" +
+                "allowSpawn: " + allowSpawn + "\n" +
+                "allowNether: " + allowNether + "\n" +
+                "allowEnd: " + allowEnd + "\n" +
+                "-------------------\n" +
+                "numberOfDimensions: " + numberOfDimensions + "\n" +
+                "pane.getHeight() [should return 1]: " + pane.getHeight());
 
         if(allowSpawn){
             ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);

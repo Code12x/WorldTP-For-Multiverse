@@ -1,6 +1,5 @@
 package com.code12.worldtp.menues;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.Bukkit;
@@ -9,12 +8,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
 public class AdvancedWorldTPMenu {
-    private final Plugin plugin = WorldTP.getInstance();
     public DataManager data = References.data;
 
     public Inventory tpMenu;
