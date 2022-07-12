@@ -1,6 +1,5 @@
 package com.code12.worldtp.gui;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
@@ -8,23 +7,20 @@ import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.PluginManager;
 
 public class DimensionsSelectionGui {
     private final ConfigManager config = References.config;
     private final DataManager data = References.data;
 
-    @Getter
-    public ChestGui gui;
-
     public DimensionsSelectionGui(World worldGroup, Player p){
         String worldGroupName = worldGroup.getName();
+
+        ChestGui gui;
 
         gui = new ChestGui(1, "Dimension");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
@@ -40,17 +36,6 @@ public class DimensionsSelectionGui {
         if(allowEnd) numberOfDimensions ++;
 
         int numberOfDimensionsLeft = numberOfDimensions;
-
-        p.sendMessage(ChatColor.RED + "***** DEBUG *****" + ChatColor.RESET + "\n" +
-                "worldGroupName: " + worldGroupName + "\n" +
-                "-------------------\n" +
-                "allowSpawn: " + allowSpawn + "\n" +
-                "allowNether: " + allowNether + "\n" +
-                "allowEnd: " + allowEnd + "\n" +
-                "-------------------\n" +
-                "numberOfDimensions: " + numberOfDimensions + "\n" +
-                "pane.getHeight() [should return 1]: " + pane.getHeight());
-
         if(allowSpawn){
             ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -146,7 +131,7 @@ public class DimensionsSelectionGui {
             pane.addItem(guiItem, Math.abs(numberOfDimensionsLeft - numberOfDimensions), 0);
             numberOfDimensionsLeft --;
         }
-
         gui.addPane(pane);
+        gui.show(p);
     }
 }

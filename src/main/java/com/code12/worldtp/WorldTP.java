@@ -2,12 +2,9 @@ package com.code12.worldtp;
 
 import com.code12.worldtp.commands.*;
 import com.code12.worldtp.files.References;
-import com.code12.worldtp.listeners.InventoryListener;
 import com.code12.worldtp.listeners.PlayerJoinListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.logging.Logger;
 
 public final class WorldTP extends JavaPlugin {
     @Override
@@ -50,7 +47,6 @@ public final class WorldTP extends JavaPlugin {
     private void registerEvents() {
         // Plugin manager
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new InventoryListener(), this);
         pm.registerEvents(new PlayerJoinListener(), this);
     }
 }
