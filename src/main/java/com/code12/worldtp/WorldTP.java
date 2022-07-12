@@ -33,7 +33,7 @@ public final class WorldTP extends JavaPlugin {
 
     private void loadCommands() {
         getCommand("worldtp").setExecutor(new CommandWorldTP());
-        getCommand("editworld").setExecutor(new CommandEditWorld());
+        getCommand("worldtpsettings").setExecutor(new CommandWorldTPSettings());
         getCommand("deleteworld").setExecutor(new CommandDeleteWorld());
         getCommand("listworlds").setExecutor(new CommandListWorlds());
         getCommand("reloadworlds").setExecutor(new CommandReloadWorlds());
