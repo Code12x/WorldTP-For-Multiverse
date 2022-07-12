@@ -61,64 +61,59 @@ public class CommandWorldTP implements CommandExecutor {
 
             // gui info
             ChestGui gui;
-
-            if(rows >= 9) {
-                gui = new ChestGui(9, "World Menu");
-            } else {
-                gui = new ChestGui(rows, "World Menu");
-            }
-
+            gui = new ChestGui(rows, "World Menu");
             gui.setOnGlobalClick(event -> event.setCancelled(true));
 
             // main task
             OutlinePane mainPain = new OutlinePane(0, 0, 9, rows);
 
-            for (String world : menuGroupList) {
+            for (String menuGroup : menuGroupList) {
                 ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
 
-                if(data.getConfig().getItemStack("worldID." + world + ".item") != null){
-                    itemStack = data.getConfig().getItemStack("worldID." + world + ".item");
+                if(data.getConfig().getItemStack("worldID." + menuGroup + ".item") != null){
+                    itemStack = data.getConfig().getItemStack("worldID." + menuGroup + ".item");
                 }
 
                 World playerWorld = player.getWorld();
                 WorldTPWorld worldToLeave = new WorldTPWorld(playerWorld);
                 String worldGroupToLeave = worldToLeave.getWorldGroup();
 
-                Boolean spawn = config.getConfig().getBoolean(world + ".Spawn_Teleporting");
-                Boolean nether = config.getConfig().getBoolean(world + ".Nether_Teleporting");
-                Boolean end = config.getConfig().getBoolean(world + ".End_Teleporting");
-
-                Location playerLocation = player.getLocation();
-
+                Boolean spawn = config.getConfig().getBoolean(menuGroup + ".Spawn_Teleporting");
+                Boolean nether = config.getConfig().getBoolean(menuGroup + ".Nether_Teleporting");
+                Boolean end = config.getConfig().getBoolean(menuGroup + ".End_Teleporting");
+                
                 GuiItem item = new GuiItem(itemStack, event -> {
+                    
+                    Player eventPlayer = (Player) event.getWhoClicked();
+                    Location playerLocation = eventPlayer.getLocation();
 
                     Location locationToTP = null;
-
+                    
                     if(spawn || nether || end){
-
+                        
                     } else{
-                        if (playerLocation.getWorld().getName().startsWith(world)){
-                            player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
+                        if (playerLocation.getWorld().getName().startsWith(menuGroup)){
+                            eventPlayer.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
                             return;
                         }
 
-                        if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + world) != null) {
-                            locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + world);
+                        if (data.getConfig().getLocation("PlayerLocations." + player.getName() + "." + menuGroup) != null) {
+                            locationToTP = data.getConfig().getLocation("PlayerLocations." + player.getName() + "." + menuGroup);
                         }
 
-                        if (data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint") != null) {
-                            locationToTP = data.getConfig().getLocation("worldID." + world + ".WorldTPWorldSpawnPoint");
+                        if (data.getConfig().getLocation("worldGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null) {
+                            locationToTP = data.getConfig().getLocation("worldID." + menuGroup + ".WorldTPWorldSpawnPoint");
                         }
 
                         if(locationToTP == null) {
-                            if (player.getBedSpawnLocation() != null) {
-                                locationToTP = player.getBedSpawnLocation();
+                            if (eventPlayer.getBedSpawnLocation() != null) {
+                                locationToTP = eventPlayer.getBedSpawnLocation();
                             } else{
-                                World bukkitWorld = Bukkit.getWorld(world);
+                                World bukkitWorld = Bukkit.getWorld(menuGroup);
                                 locationToTP = bukkitWorld.getSpawnLocation();
                             }
                         }
-                        player.teleport(locationToTP);
+                        eventPlayer.teleport(locationToTP);
                     }
                 });
 
