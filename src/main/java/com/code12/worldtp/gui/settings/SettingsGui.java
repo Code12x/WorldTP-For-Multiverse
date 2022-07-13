@@ -6,6 +6,7 @@ import com.code12.worldtp.files.References;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +36,7 @@ public class SettingsGui {
             item.setItemMeta(itemMeta);
 
             GuiItem guiItem = new GuiItem(item, event ->{
-                new WorldConfigurationGui((Player) event.getWhoClicked(), );
+                new WorldConfigurationGui((Player) event.getWhoClicked(), Bukkit.getWorld(menuGroup));
             });
 
             pane.addItem(guiItem, x, y);
