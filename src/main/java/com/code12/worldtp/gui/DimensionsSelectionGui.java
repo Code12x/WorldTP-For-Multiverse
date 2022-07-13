@@ -40,7 +40,7 @@ public class DimensionsSelectionGui {
             ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            itemMeta.setDisplayName(worldGroupName + " Spawn");
+            itemMeta.setDisplayName(worldGroupName + " Spawn");//TODO:Change worldGroupName to displayName!!! for all three dimensions
             itemStack.setItemMeta(itemMeta);
 
             GuiItem guiItem = new GuiItem(itemStack, event -> {
@@ -131,6 +131,9 @@ public class DimensionsSelectionGui {
             pane.addItem(guiItem, Math.abs(numberOfDimensionsLeft - numberOfDimensions), 0);
             numberOfDimensionsLeft --;
         }
+
+        //TODO: add the resume option!!!
+
         gui.addPane(pane);
         gui.show(p);
     }

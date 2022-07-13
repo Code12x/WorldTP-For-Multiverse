@@ -2,7 +2,6 @@ package com.code12.worldtp.gui.settings;
 
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
-import com.code12.worldtp.gui.util.TextInputGui;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
@@ -21,24 +20,35 @@ public class WorldConfigurationGui {
         String worldName = world.getName();
 
         ChestGui gui = new ChestGui(4, "Settings for " + worldName);
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         // Navigation Pane
-        StaticPane navigationPane = new StaticPane(0, 4, 9, 1);
+        StaticPane navigationPane = new StaticPane(0, 3, 9, 1);
 
         GuiItem backArrowGuiItem = new GuiItem(processItemStack(Material.ARROW, "Back"), event -> {
             new SettingsGui((Player) event.getWhoClicked());
         });
+
+        GuiItem closeGuiItem = new GuiItem(processItemStack(Material.RED_WOOL, "Save & Close"), event -> {
+            event.getView().close();
+        });
+
         navigationPane.addItem(backArrowGuiItem, 0, 0);
+        navigationPane.addItem(closeGuiItem, 8, 0);
+        gui.addPane(navigationPane);
         //-----------------
 
         // MainPane with the options. (DisplayName, ItemToBeDisplayed, adminOnly, Dimensions)
         StaticPane mainPane = new StaticPane(0, 0, 9, 3);
 
-        String displayName = data.getConfig().getString("MenuGroupID." + worldName + ".DisplayName");
-        GuiItem DisplayNameGuiItem = new GuiItem(processItemStack(Material.OAK_SIGN, displayName), event -> {
-            TextInputGui textInputGui = new TextInputGui("Enter the Name to be Displayed");
+        String displayName = data.getConfig().getString("menuGroupID." + worldName + ".displayName");
+        GuiItem displayNameGuiItem = new GuiItem(processItemStack(Material.OAK_SIGN, "Change Display Name (currently: " + displayName + ")"), event -> {
+            DisplayNameTextInputGui textInputGui = new DisplayNameTextInputGui("Enter the Name to be Displayed", worldName);
+            textInputGui.getGui().show(event.getWhoClicked());
         });
-
+        mainPane.addItem(displayNameGuiItem, 1, 1);
+        gui.addPane(mainPane);
+        gui.show(player);
     }
 
     public ItemStack processItemStack(Material material, String name){

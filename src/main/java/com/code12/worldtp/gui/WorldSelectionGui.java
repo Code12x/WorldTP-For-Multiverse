@@ -85,7 +85,7 @@ public class WorldSelectionGui {
 
                 } else{
                     if (playerLocation.getWorld().getName().startsWith(menuGroup)){
-                        eventPlayer.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupToLeave);
+                        eventPlayer.sendMessage(ChatColor.YELLOW + "You are already in the world: " + data.getConfig().getString("menuGroupID." + menuGroup + ".displayName"));
                         return;
                     }
 

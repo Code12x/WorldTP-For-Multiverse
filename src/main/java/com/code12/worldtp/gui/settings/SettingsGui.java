@@ -18,7 +18,9 @@ public class SettingsGui {
     DataManager data = References.data;
 
     public SettingsGui(Player player){
-        ChestGui gui = new ChestGui(4, "Settings");
+        ChestGui gui = new ChestGui(4, "Settings: Select World");
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         StaticPane pane = new StaticPane(0, 0, 9, 4);
 
         List<String> menuGroupList = data.getConfig().getStringList("menuGroupList");
