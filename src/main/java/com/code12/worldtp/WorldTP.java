@@ -3,10 +3,12 @@ package com.code12.worldtp;
 import com.code12.worldtp.commands.*;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.listeners.PlayerJoinListener;
+import com.code12.worldtp.listeners.PlayerQuitListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class WorldTP extends JavaPlugin {
+
     @Override
     public void onEnable() {
         // config.yml
@@ -48,5 +50,6 @@ public final class WorldTP extends JavaPlugin {
         // Plugin manager
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(), this);
+        pm.registerEvents(new PlayerQuitListener(this), this);
     }
 }
