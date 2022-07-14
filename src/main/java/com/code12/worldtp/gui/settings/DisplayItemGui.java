@@ -7,6 +7,8 @@ import com.github.stefvanschie.inventoryframework.gui.type.AnvilGui;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +22,7 @@ public class DisplayItemGui {
     DataManager data = References.data;
     ChestGui gui = new ChestGui(4, "Select Item to be Displayed");
 
-    public DisplayItemGui() {
+    public DisplayItemGui(World world) {
 
         StaticPane searchPane = new StaticPane(0, 0, 9, 1);
 
@@ -42,11 +44,37 @@ public class DisplayItemGui {
             ItemStack confirmItem = processItemStack(Material.PAPER, "Click to Confirm");
 
             GuiItem confirmGuiItem = new GuiItem(confirmItem, searchClick -> {
-                ChestGui resultsOfSearchGui = new ChestGui(1, "Search results for \"" + searchGui.getRenameText() + "\"");
+                String renameText = searchGui.getRenameText();
+
+                ChestGui resultsOfSearchGui = new ChestGui(1, "Search results for \"" + renameText + "\"");
 
                 StaticPane mainPain = new StaticPane(0, 0, 9, 1);
 
-                //todo: here
+                try{
+                    ItemStack searchedItem = new ItemStack(Material.valueOf(renameText));
+                    ItemMeta searchedItemMeta = searchedItem.getItemMeta();
+                    searchedItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                    searchedItem.setItemMeta(searchedItemMeta);
+
+                    GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
+                        data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
+
+                        new WorldConfigurationGui((Player) selectItemEvent.getWhoClicked(), world);
+                    });
+
+                    mainPain.addItem(searchedGuiItem, 0, 0);
+                }catch (Exception e){
+                    ItemStack noResultsItem = new ItemStack(Material.BARRIER);
+                    ItemMeta noResultsItemItemMeta = noResultsItem.getItemMeta();
+                    noResultsItemItemMeta.setDisplayName("No results for \"" + renameText + "\"");
+                    noResultsItem.setItemMeta(noResultsItemItemMeta);
+
+                    GuiItem noResultsGuiItem = new GuiItem(noResultsItem, selectNoResultsItem -> {
+                        new WorldConfigurationGui((Player) selectNoResultsItem.getWhoClicked(), world);
+                    });
+
+                    mainPain.addItem(noResultsGuiItem, 0, 0);
+                }
             });
 
             resultPane.addItem(confirmGuiItem, 0, 0);

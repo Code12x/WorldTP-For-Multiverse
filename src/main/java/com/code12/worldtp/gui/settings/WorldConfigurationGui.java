@@ -50,7 +50,7 @@ public class WorldConfigurationGui {
         ItemStack displayItem = data.getConfig().getItemStack("menuGroupID." + worldName + ".item");
 
         GuiItem displayItemGuiItem = new GuiItem(displayItem, event -> {
-            DisplayItemGui displayItemGui = new displayItemGui();
+            DisplayItemGui displayItemGui = new DisplayItemGui(world);
         });
 
         mainPane.addItem(displayNameGuiItem, 1, 1);
