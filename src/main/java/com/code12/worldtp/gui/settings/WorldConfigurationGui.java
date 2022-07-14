@@ -36,7 +36,7 @@ public class WorldConfigurationGui {
         navigationPane.addItem(backArrowGuiItem, 0, 0);
         navigationPane.addItem(closeGuiItem, 8, 0);
         gui.addPane(navigationPane);
-        //-----------------
+        //================
 
         // MainPane with the options. (DisplayName, ItemToBeDisplayed, adminOnly, Dimensions)
         StaticPane mainPane = new StaticPane(0, 0, 9, 3);
@@ -47,7 +47,11 @@ public class WorldConfigurationGui {
             textInputGui.getGui().show(event.getWhoClicked());
         });
 
-        //TODO: ItemToBeDisplayed next :D glhf *evil laughter*
+        ItemStack displayItem = data.getConfig().getItemStack("menuGroupID." + worldName + ".item");
+
+        GuiItem displayItemGuiItem = new GuiItem(displayItem, event -> {
+            DisplayItemGui displayItemGui = new displayItemGui();
+        });
 
         mainPane.addItem(displayNameGuiItem, 1, 1);
         gui.addPane(mainPane);
