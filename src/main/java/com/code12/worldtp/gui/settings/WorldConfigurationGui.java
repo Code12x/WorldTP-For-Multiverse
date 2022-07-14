@@ -46,6 +46,9 @@ public class WorldConfigurationGui {
             DisplayNameTextInputGui textInputGui = new DisplayNameTextInputGui("Enter the Name to be Displayed", worldName);
             textInputGui.getGui().show(event.getWhoClicked());
         });
+
+        //TODO: ItemToBeDisplayed next :D glhf *evil laughter*
+
         mainPane.addItem(displayNameGuiItem, 1, 1);
         gui.addPane(mainPane);
         gui.show(player);
