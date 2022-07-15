@@ -48,12 +48,17 @@ public class WorldConfigurationGui {
         });
 
         ItemStack displayItem = data.getConfig().getItemStack("menuGroupID." + worldName + ".item");
+        ItemMeta displayItemMeta = displayItem.getItemMeta();
+        displayItemMeta.setDisplayName("Change Display Item");
+        displayItem.setItemMeta(displayItemMeta);
 
         GuiItem displayItemGuiItem = new GuiItem(displayItem, event -> {
             DisplayItemGui displayItemGui = new DisplayItemGui(world);
+            displayItemGui.getGui().show(player);
         });
 
         mainPane.addItem(displayNameGuiItem, 1, 1);
+        mainPane.addItem(displayItemGuiItem, 3, 1);
         gui.addPane(mainPane);
         gui.show(player);
     }

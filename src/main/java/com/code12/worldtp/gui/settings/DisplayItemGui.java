@@ -13,9 +13,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DisplayItemGui {
 
-    // top row for recently searched and used items. also for the search item
+    // top row for recently searched items. also for the search item
     // middle two rows for commonly used items
     // bottom row for confirm/back
 
@@ -24,10 +27,13 @@ public class DisplayItemGui {
 
     public DisplayItemGui(World world) {
 
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+
         StaticPane searchPane = new StaticPane(0, 0, 9, 1);
 
         GuiItem searchGuiItem = new GuiItem(processItemStack(Material.BOOK, "Search for Other Item"), event -> {
             AnvilGui searchGui = new AnvilGui("Search for an item");
+            searchGui.setOnGlobalClick(e -> e.setCancelled(true));
 
             // ------------------
             StaticPane firstPane = new StaticPane(0, 0, 1, 1);
@@ -48,6 +54,8 @@ public class DisplayItemGui {
 
                 ChestGui resultsOfSearchGui = new ChestGui(1, "Search results for \"" + renameText + "\"");
 
+                resultsOfSearchGui.setOnGlobalClick(e -> e.setCancelled(true));
+
                 StaticPane mainPain = new StaticPane(0, 0, 9, 1);
 
                 try{
@@ -58,6 +66,21 @@ public class DisplayItemGui {
 
                     GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
                         data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
+
+                        ArrayList<ItemStack> recentlySearchedItems = new ArrayList<>();
+
+                        if(data.getConfig().getList("recentlySearchedItems") != null) {
+                            recentlySearchedItems = (ArrayList<ItemStack>) data.getConfig().getList("recentlySearchedItems");
+
+                            if(recentlySearchedItems.size() >= 7){
+                                recentlySearchedItems.remove(0);
+                            }
+                        }
+
+                        recentlySearchedItems.add(searchedItem);
+                        
+                        data.getConfig().set("recentlySearchedItems", recentlySearchedItems);
+                        data.saveConfig();
 
                         new WorldConfigurationGui((Player) selectItemEvent.getWhoClicked(), world);
                     });
@@ -75,12 +98,47 @@ public class DisplayItemGui {
 
                     mainPain.addItem(noResultsGuiItem, 0, 0);
                 }
+
+                resultsOfSearchGui.addPane(mainPain);
+
+                resultsOfSearchGui.show(searchClick.getWhoClicked());
             });
 
             resultPane.addItem(confirmGuiItem, 0, 0);
 
             searchGui.getResultComponent().addPane(resultPane);
+
+            searchGui.show(event.getWhoClicked());
         });
+        
+        if(data.getConfig().getList("recentlySearchedItems") != null){
+            List<ItemStack> recentlySearchedItems = (List<ItemStack>) data.getConfig().getList("recentlySearchedItems");
+
+            int x = recentlySearchedItems.size() + 1;
+
+            for(ItemStack recentlySearchedItem : recentlySearchedItems){
+                GuiItem recentlySearchedGuiItem = new GuiItem(recentlySearchedItem, event -> {
+                    data.getConfig().set("menuGroupID." + world.getName() + ".item", recentlySearchedItem);
+
+                    ArrayList<ItemStack> recentlySearchedItemsEdit = new ArrayList<>(recentlySearchedItems);
+
+                    recentlySearchedItemsEdit.remove(recentlySearchedItem);
+                    recentlySearchedItemsEdit.add(recentlySearchedItem);
+
+                    data.getConfig().set("recentlySearchedItems", recentlySearchedItemsEdit);
+                    data.saveConfig();
+
+                    new WorldConfigurationGui((Player) event.getWhoClicked(), world);
+                });
+
+                searchPane.addItem(recentlySearchedGuiItem, x, 0);
+                x--;
+            }
+        }
+
+        searchPane.addItem(searchGuiItem, 0, 0);
+
+        gui.addPane(searchPane);
     }
 
     public ChestGui getGui(){
