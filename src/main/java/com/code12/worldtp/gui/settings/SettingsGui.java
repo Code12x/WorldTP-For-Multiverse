@@ -1,6 +1,5 @@
 package com.code12.worldtp.gui.settings;
 
-import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;

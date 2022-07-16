@@ -11,6 +11,7 @@ import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class WorldSelectionGui {
                 }
             }
             numberOfWorlds = notAdminWorlds.size();
+            menuGroupList = notAdminWorlds;
         }
 
         int rows = 1;
@@ -61,11 +63,10 @@ public class WorldSelectionGui {
 
             if(data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item") != null){
                 itemStack = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item");
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(data.getConfig().getString("menuGroupID." + menuGroup + ".displayName"));
+                itemStack.setItemMeta(itemMeta);
             }
-
-            World playerWorld = player.getWorld();
-            WorldTPWorld worldToLeave = new WorldTPWorld(playerWorld);
-            String worldGroupToLeave = worldToLeave.getWorldGroup();
 
             Boolean spawn = config.getConfig().getBoolean(menuGroup + ".Spawn_Teleporting");
             Boolean nether = config.getConfig().getBoolean(menuGroup + ".Nether_Teleporting");

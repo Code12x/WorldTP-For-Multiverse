@@ -137,8 +137,44 @@ public class DisplayItemGui {
         }
 
         searchPane.addItem(searchGuiItem, 0, 0);
+        // -------------------------------------------------------------------------------------------------------------
 
+        StaticPane commonlyUsedItemsPane = new StaticPane(0, 2, 9, 1);
+
+        ArrayList<ItemStack> commonlyUsedItems = new ArrayList<>();
+
+        commonlyUsedItems.add(new ItemStack(Material.GRASS_BLOCK));
+        commonlyUsedItems.add(new ItemStack(Material.OAK_DOOR));
+        commonlyUsedItems.add(new ItemStack(Material.IRON_SWORD));
+        commonlyUsedItems.add(new ItemStack(Material.NETHER_STAR));
+        commonlyUsedItems.add(new ItemStack(Material.IRON_PICKAXE));
+        commonlyUsedItems.add(new ItemStack(Material.BEACON));
+        commonlyUsedItems.add(new ItemStack(Material.GLOWSTONE));
+        commonlyUsedItems.add(new ItemStack(Material.FURNACE));
+        commonlyUsedItems.add(new ItemStack(Material.REDSTONE_BLOCK));
+
+        for(ItemStack commonlyUsedItem : commonlyUsedItems){
+            GuiItem commonlyUsedGuiItem = new GuiItem(commonlyUsedItem, event -> {
+                data.getConfig().set("menuGroupID." + world.getName() + ".item", commonlyUsedItem);
+                data.saveConfig();
+
+                new WorldConfigurationGui((Player) event.getWhoClicked(), world);
+            });
+
+            commonlyUsedItemsPane.addItem(commonlyUsedGuiItem, commonlyUsedItems.indexOf(commonlyUsedItem), 0);
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        StaticPane navigationPane = new StaticPane(0, 3, 9, 1);
+
+        navigationPane.addItem(
+                new GuiItem(processItemStack(Material.ARROW, "Back"),
+                        event -> new WorldConfigurationGui((Player) event.getWhoClicked(), world)),
+                0, 0);
+
+        //  ============================================================================================================
         gui.addPane(searchPane);
+        gui.addPane(commonlyUsedItemsPane);
+        gui.addPane(navigationPane);
     }
 
     public ChestGui getGui(){

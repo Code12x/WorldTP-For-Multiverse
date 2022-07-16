@@ -22,6 +22,9 @@ public class DisplayNameTextInputGui {
     public DisplayNameTextInputGui(String title, String world){
         gui = new AnvilGui(title);
         gui.setOnGlobalClick(event -> event.setCancelled(true));
+        gui.setOnClose(event -> {
+            new WorldConfigurationGui((Player) event.getPlayer(), Bukkit.getWorld(world));
+        });
 
         StaticPane firstComponentPane = new StaticPane(0, 0, 1, 1);
 
@@ -48,11 +51,7 @@ public class DisplayNameTextInputGui {
                 data.saveConfig();
             }
 
-            new WorldConfigurationGui((Player) event.getWhoClicked(), Bukkit.getWorld(world));
-        });
-
-        gui.setOnClose(event -> {
-            new WorldConfigurationGui((Player) event.getPlayer(), Bukkit.getWorld(world));
+            event.getView().close();
         });
 
         resultComponentPane.addItem(resultGuiItem, 0, 0);

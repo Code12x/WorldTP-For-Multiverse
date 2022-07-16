@@ -29,7 +29,7 @@ public class WorldConfigurationGui {
             new SettingsGui((Player) event.getWhoClicked());
         });
 
-        GuiItem closeGuiItem = new GuiItem(processItemStack(Material.RED_WOOL, "Save & Close"), event -> {
+        GuiItem closeGuiItem = new GuiItem(processItemStack(Material.RED_WOOL, "Close"), event -> {
             event.getView().close();
         });
 
@@ -41,12 +41,13 @@ public class WorldConfigurationGui {
         // MainPane with the options. (DisplayName, ItemToBeDisplayed, adminOnly, Dimensions)
         StaticPane mainPane = new StaticPane(0, 0, 9, 3);
 
+        // -------------------------------------------------------------------------------------------------------------
         String displayName = data.getConfig().getString("menuGroupID." + worldName + ".displayName");
         GuiItem displayNameGuiItem = new GuiItem(processItemStack(Material.OAK_SIGN, "Change Display Name (currently: " + displayName + ")"), event -> {
             DisplayNameTextInputGui textInputGui = new DisplayNameTextInputGui("Enter the Name to be Displayed", worldName);
             textInputGui.getGui().show(event.getWhoClicked());
         });
-
+        // -------------------------------------------------------------------------------------------------------------
         ItemStack displayItem = data.getConfig().getItemStack("menuGroupID." + worldName + ".item");
         ItemMeta displayItemMeta = displayItem.getItemMeta();
         displayItemMeta.setDisplayName("Change Display Item");
@@ -56,9 +57,21 @@ public class WorldConfigurationGui {
             DisplayItemGui displayItemGui = new DisplayItemGui(world);
             displayItemGui.getGui().show(player);
         });
+        // -------------------------------------------------------------------------------------------------------------
+        Boolean adminOnly = data.getConfig().getBoolean("menuGroupID." + worldName + ".admin");
 
+        ItemStack whitelistItem = processItemStack(Material.PAPER, "Toggle Whitelist (Currently: " + (adminOnly ? "ON" : "OFF") + ")");
+
+        GuiItem whitelistGuiItem = new GuiItem(whitelistItem, event -> {
+            data.getConfig().set("menuGroupID." + worldName + ".admin", !adminOnly);
+            data.saveConfig();
+            new WorldConfigurationGui(player, world);
+        });
+        // =============================================================================================================
         mainPane.addItem(displayNameGuiItem, 1, 1);
         mainPane.addItem(displayItemGuiItem, 3, 1);
+        mainPane.addItem(whitelistGuiItem, 5, 1);
+
         gui.addPane(mainPane);
         gui.show(player);
     }
