@@ -1,8 +1,6 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.files.DataManager;
-import com.code12.worldtp.files.References;
-import com.code12.worldtp.gui.settings.SettingsGui;
+import com.code12.worldtp.gui.settings.SelectWorldToEditGui;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,7 +23,7 @@ public class CommandWorldTPSettings implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        new SettingsGui(player);
+        new SelectWorldToEditGui(player);
 
         return true;
     }

@@ -82,7 +82,7 @@ public class DisplayItemGui {
                         data.getConfig().set("recentlySearchedItems", recentlySearchedItems);
                         data.saveConfig();
 
-                        new WorldConfigurationGui((Player) selectItemEvent.getWhoClicked(), world);
+                        new SettingsGui((Player) selectItemEvent.getWhoClicked(), world);
                     });
 
                     mainPain.addItem(searchedGuiItem, 0, 0);
@@ -93,7 +93,7 @@ public class DisplayItemGui {
                     noResultsItem.setItemMeta(noResultsItemItemMeta);
 
                     GuiItem noResultsGuiItem = new GuiItem(noResultsItem, selectNoResultsItem -> {
-                        new WorldConfigurationGui((Player) selectNoResultsItem.getWhoClicked(), world);
+                        new SettingsGui((Player) selectNoResultsItem.getWhoClicked(), world);
                     });
 
                     mainPain.addItem(noResultsGuiItem, 0, 0);
@@ -128,7 +128,7 @@ public class DisplayItemGui {
                     data.getConfig().set("recentlySearchedItems", recentlySearchedItemsEdit);
                     data.saveConfig();
 
-                    new WorldConfigurationGui((Player) event.getWhoClicked(), world);
+                    new SettingsGui((Player) event.getWhoClicked(), world);
                 });
 
                 searchPane.addItem(recentlySearchedGuiItem, x, 0);
@@ -158,7 +158,7 @@ public class DisplayItemGui {
                 data.getConfig().set("menuGroupID." + world.getName() + ".item", commonlyUsedItem);
                 data.saveConfig();
 
-                new WorldConfigurationGui((Player) event.getWhoClicked(), world);
+                new SettingsGui((Player) event.getWhoClicked(), world);
             });
 
             commonlyUsedItemsPane.addItem(commonlyUsedGuiItem, commonlyUsedItems.indexOf(commonlyUsedItem), 0);
@@ -168,7 +168,7 @@ public class DisplayItemGui {
 
         navigationPane.addItem(
                 new GuiItem(processItemStack(Material.ARROW, "Back"),
-                        event -> new WorldConfigurationGui((Player) event.getWhoClicked(), world)),
+                        event -> new SettingsGui((Player) event.getWhoClicked(), world)),
                 0, 0);
 
         //  ============================================================================================================

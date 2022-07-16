@@ -4,7 +4,6 @@ import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.AnvilGui;
-import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,18 +11,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class DisplayNameTextInputGui {
+public class DisplayNameGui {
 
     DataManager data = References.data;
 
     AnvilGui gui;
     String textInput;
 
-    public DisplayNameTextInputGui(String title, String world){
+    public DisplayNameGui(String title, String world){
         gui = new AnvilGui(title);
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.setOnClose(event -> {
-            new WorldConfigurationGui((Player) event.getPlayer(), Bukkit.getWorld(world));
+            new SettingsGui((Player) event.getPlayer(), Bukkit.getWorld(world));
         });
 
         StaticPane firstComponentPane = new StaticPane(0, 0, 1, 1);
