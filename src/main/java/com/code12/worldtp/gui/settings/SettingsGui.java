@@ -67,6 +67,8 @@ public class SettingsGui {
             data.saveConfig();
             new SettingsGui(player, world);
         });
+
+        GuiItem whitelistInfoGuiItem = new GuiItem(processItemStack(Material.BOOK, "Permission worldtp.worldtp is needed to select this world."));
         // -------------------------------------------------------------------------------------------------------------
         ItemStack configItem = processItemStack(Material.END_PORTAL_FRAME, "Dimensions Configuration");
 
@@ -79,6 +81,7 @@ public class SettingsGui {
         mainPane.addItem(displayNameGuiItem, 1, 1);
         mainPane.addItem(displayItemGuiItem, 3, 1);
         mainPane.addItem(whitelistGuiItem, 5, 1);
+        mainPane.addItem(whitelistInfoGuiItem, 5, 2);
         mainPane.addItem(dimensionsConfigGuiItem, 7, 1);
 
         gui.addPane(mainPane);

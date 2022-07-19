@@ -8,7 +8,10 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import lombok.Getter;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,9 +25,12 @@ public class WorldSelectionGui {
     ConfigManager config = References.config;
 
     @Getter
-    public ChestGui gui;
+    private ChestGui gui;
 
     public WorldSelectionGui(Player player){
+        // -------------------------------------------------------------------------------------------------------------
+        // gui init
+        // -------------------------------------------------------------------------------------------------------------
         int numberOfWorlds;
         List<String> menuGroupList = data.getConfig().getStringList("menuGroupList");
 
@@ -50,68 +56,68 @@ public class WorldSelectionGui {
             slots += 9;
         }
 
-        // gui info
-        ChestGui gui;
         gui = new ChestGui(rows, "World Menu");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
-        // main task
-        OutlinePane mainPain = new OutlinePane(0, 0, 9, rows);
+        OutlinePane worldsPane = new OutlinePane(0, 0, 9, rows);
 
+        // -------------------------------------------------------------------------------------------------------------
+        // Add menuGroups to the worldsPane
+        // -------------------------------------------------------------------------------------------------------------
         for (String menuGroup : menuGroupList) {
-            ItemStack itemStack = new ItemStack(Material.GRASS_BLOCK);
+            ItemStack menuGroupItem = new ItemStack(Material.GRASS_BLOCK);
+            String menuGroupDisplayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 
             if(data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item") != null){
-                itemStack = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item");
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(data.getConfig().getString("menuGroupID." + menuGroup + ".displayName"));
-                itemStack.setItemMeta(itemMeta);
+                menuGroupItem = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item");
+                ItemMeta menuGroupItemMeta = menuGroupItem.getItemMeta();
+                menuGroupItemMeta.setDisplayName(menuGroupDisplayName);
+                menuGroupItem.setItemMeta(menuGroupItemMeta);
             }
 
             Boolean spawn = config.getConfig().getBoolean(menuGroup + ".Spawn_Teleporting");
             Boolean nether = config.getConfig().getBoolean(menuGroup + ".Nether_Teleporting");
             Boolean end = config.getConfig().getBoolean(menuGroup + ".End_Teleporting");
 
-            GuiItem item = new GuiItem(itemStack, event -> {
-
-                Player eventPlayer = (Player) event.getWhoClicked();
-                Location playerLocation = eventPlayer.getLocation();
-
-                Location locationToTP = null;
-
+            GuiItem menuGroupGuiItem = new GuiItem(menuGroupItem, event -> {
                 if(spawn || nether || end){
-                    eventPlayer.closeInventory();
+                    player.closeInventory();
 
-                    new DimensionsSelectionGui(Bukkit.getWorld(menuGroup), eventPlayer);
-
+                    DimensionsSelectionGui dimensionsSelectionGui = new DimensionsSelectionGui(Bukkit.getWorld(menuGroup), player);
+                    dimensionsSelectionGui.getGui().show(player);
                 } else{
-                    if (playerLocation.getWorld().getName().startsWith(menuGroup)){
-                        eventPlayer.sendMessage(ChatColor.YELLOW + "You are already in the world: " + data.getConfig().getString("menuGroupID." + menuGroup + ".displayName"));
+                    Location playerLocation = player.getLocation();
+
+                    WorldTPWorld worldGroupToLeave = new WorldTPWorld(player.getWorld());
+                    String worldGroupToLeaveName = worldGroupToLeave.getWorldGroup();
+
+                    Location locationToTP;
+
+                    if (player.getWorld().getName().startsWith(menuGroup)){
+                        player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + menuGroupDisplayName);
                         return;
                     }
-
-                    if (data.getConfig().getLocation("PlayerLocations." + player.getName() + "." + menuGroup) != null) {
-                        locationToTP = data.getConfig().getLocation("PlayerLocations." + player.getName() + "." + menuGroup);
-                    }
-
-                    if (data.getConfig().getLocation("worldGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null) {
+                    else if (data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null) {
                         locationToTP = data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint");
                     }
-
-                    if(locationToTP == null) {
-                        if (eventPlayer.getBedSpawnLocation() != null) {
-                            locationToTP = eventPlayer.getBedSpawnLocation();
-                        } else{
-                            World bukkitWorld = Bukkit.getWorld(menuGroup);
-                            locationToTP = bukkitWorld.getSpawnLocation();
-                        }
+                    else if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup) != null) {
+                        locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup);
                     }
-                    eventPlayer.teleport(locationToTP);
+                    else{
+                        locationToTP = Bukkit.getWorld(menuGroup).getSpawnLocation();
+                    }
+
+                    data.getConfig().set("playerLocations." + player.getName() + "." + worldGroupToLeaveName, playerLocation);
+                    data.saveConfig();
+
+                    player.teleport(locationToTP);
                 }
             });
-            mainPain.addItem(item);
+            worldsPane.addItem(menuGroupGuiItem);
         }
-        gui.addPane(mainPain);
-        gui.show(player);
+        // -------------------------------------------------------------------------------------------------------------
+        // Add panes to gui
+        // -------------------------------------------------------------------------------------------------------------
+        gui.addPane(worldsPane);
     }
 }

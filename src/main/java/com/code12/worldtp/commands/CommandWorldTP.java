@@ -37,7 +37,8 @@ public class CommandWorldTP implements CommandExecutor {
                 return true;
             }
 
-            new WorldSelectionGui(player);
+            WorldSelectionGui worldSelectionGui = new WorldSelectionGui(player);
+            worldSelectionGui.getGui().show(player);
         }
         return true;
     }
