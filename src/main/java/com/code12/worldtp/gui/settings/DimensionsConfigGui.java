@@ -19,11 +19,17 @@ public class DimensionsConfigGui {
     ChestGui gui;
 
     public DimensionsConfigGui(Player player, World world){
+        // -------------------------------------------------------------------------------------------------------------
+        // gui init
+        // -------------------------------------------------------------------------------------------------------------
         gui = new ChestGui(2, "Configure Dimensions for " + world.getName());
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         OutlinePane configPane = new OutlinePane(0, 0, 9, 1);
 
+        // -------------------------------------------------------------------------------------------------------------
+        // Creating the config items and add them to the configPane
+        // -------------------------------------------------------------------------------------------------------------
         String[] dimensions = {"Spawn", "Nether", "End"};
 
         for (String dimension : dimensions){
@@ -59,12 +65,19 @@ public class DimensionsConfigGui {
             configPane.addItem(dimensionGuiItem);
         }
 
+        // -------------------------------------------------------------------------------------------------------------
+        // Navigation Pane
+        // -------------------------------------------------------------------------------------------------------------
         StaticPane navigationPane = new StaticPane(0, 1, 9, 1);
 
         navigationPane.addItem(new GuiItem(processItemStack(Material.ARROW, "Back"), event -> {
-            new SettingsGui(player, world);
+            SettingsGui settingsGui = new SettingsGui(player, world);
+            settingsGui.getGui().show(player);
         }), 0, 0);
 
+        // -------------------------------------------------------------------------------------------------------------
+        // Adding the panes to the gui
+        // -------------------------------------------------------------------------------------------------------------
         gui.addPane(configPane);
         gui.addPane(navigationPane);
     }

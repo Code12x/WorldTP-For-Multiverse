@@ -23,7 +23,8 @@ public class CommandWorldTPSettings implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        new SelectWorldToEditGui(player);
+        SelectWorldToEditGui selectWorldToEditGui = new SelectWorldToEditGui(player);
+        selectWorldToEditGui.getGui().show(player);
 
         return true;
     }
