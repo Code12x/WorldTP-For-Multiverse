@@ -77,31 +77,26 @@ public class DisplayItemGui {
                 // GuiItem
                 // -----------------------------------------------------------------------------------------------------
                 try{
-                    ItemStack searchedItem = new ItemStack(Material.valueOf(formattedRenameText));
-                    ItemMeta searchedItemMeta = searchedItem.getItemMeta();
-                    searchedItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                    searchedItem.setItemMeta(searchedItemMeta);
-//todo: here. Working on fixing the display-name being "Change Display Item" on each recentlySearchedItem. AAAAAAAaaaaaaa
-                    ItemStack blankSearchedItem = new ItemStack(searchedItem.getData().getItemType());
+                    ItemStack searchedItem = processItemStack(Material.valueOf(formattedRenameText));
 
                     GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
-                        data.getConfig().set("menuGroupID." + world.getName() + ".item", blankSearchedItem);
+                        data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
+                        data.saveConfig();
 
                         ArrayList<ItemStack> recentlySearchedItems = new ArrayList<>();
 
                         if(data.getConfig().getList("recentlySearchedItems") != null) {
                             recentlySearchedItems = (ArrayList<ItemStack>) data.getConfig().getList("recentlySearchedItems");
 
-                            if(recentlySearchedItems.contains(blankSearchedItem)){
-                                recentlySearchedItems.remove(blankSearchedItem);
-                                recentlySearchedItems.add(blankSearchedItem);
+                            if(recentlySearchedItems.contains(searchedItem)){
+                                recentlySearchedItems.remove(searchedItem);
                             }
                             else if(recentlySearchedItems.size() >= 7){
                                 recentlySearchedItems.remove(0);
                             }
                         }
 
-                        recentlySearchedItems.add(blankSearchedItem);
+                        recentlySearchedItems.add(searchedItem);
                         
                         data.getConfig().set("recentlySearchedItems", recentlySearchedItems);
                         data.saveConfig();
@@ -159,6 +154,7 @@ public class DisplayItemGui {
             // ---------------------------------------------------------------------------------------------------------
             for(ItemStack recentlySearchedItem : recentlySearchedItems){
                 GuiItem recentlySearchedGuiItem = new GuiItem(recentlySearchedItem, event -> {
+                    event.getWhoClicked().sendMessage("recentlySearchedGuiItem.getItemMeta().getDisplayName(): " + recentlySearchedItem.getItemMeta().getDisplayName());
                     data.getConfig().set("menuGroupID." + world.getName() + ".item", recentlySearchedItem);
 
                     ArrayList<ItemStack> recentlySearchedItemsEdit = new ArrayList<>(recentlySearchedItems);
@@ -215,10 +211,12 @@ public class DisplayItemGui {
         // -------------------------------------------------------------------------------------------------------------
         StaticPane navigationPane = new StaticPane(0, 3, 9, 1);
 
-        navigationPane.addItem(
-                new GuiItem(processItemStack(Material.ARROW, "Back"),
-                        event -> new SettingsGui((Player) event.getWhoClicked(), world)),
-                0, 0);
+        GuiItem navigationBackGuiItem = new GuiItem(processItemStack(Material.ARROW), event -> {
+            SettingsGui settingsGui = new SettingsGui((Player) event.getWhoClicked(), world);
+            settingsGui.getGui().show(event.getWhoClicked());
+        });
+
+        navigationPane.addItem(navigationBackGuiItem, 0, 0);
 
         // -------------------------------------------------------------------------------------------------------------
         // Add the panes to the gui
