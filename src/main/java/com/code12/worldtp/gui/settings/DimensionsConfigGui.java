@@ -2,7 +2,6 @@ package com.code12.worldtp.gui.settings;
 
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.References;
-import com.code12.worldtp.gui.DimensionsSelectionGui;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;

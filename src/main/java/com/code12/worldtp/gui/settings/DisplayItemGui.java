@@ -34,7 +34,7 @@ public class DisplayItemGui {
         // -------------------------------------------------------------------------------------------------------------
         // The searchGuiItem
         // -------------------------------------------------------------------------------------------------------------
-        GuiItem searchGuiItem = new GuiItem(processItemStack(Material.BOOK, "Search for Other Item"), event -> {
+        GuiItem searchGuiItem = new GuiItem(processItemStack(Material.BOOK, "Search for Another Item"), event -> {
             // ---------------------------------------------------------------------------------------------------------
             // searchGui init (AnvilGui)
             // ---------------------------------------------------------------------------------------------------------
@@ -78,19 +78,21 @@ public class DisplayItemGui {
                 // -----------------------------------------------------------------------------------------------------
                 try{
                     Material material = Material.valueOf(formattedRenameText);
-                    ItemStack searchedItem = processItemStack(material, material.toString().toLowerCase().replace("_", " "));
+                    ItemStack searchedItem = processItemStackWithVanillaName(material);
 
                     GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
                         data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
-                        data.saveConfig();
 
                         ArrayList<ItemStack> recentlySearchedItems = new ArrayList<>();
 
                         if(data.getConfig().getList("recentlySearchedItems") != null) {
                             recentlySearchedItems = (ArrayList<ItemStack>) data.getConfig().getList("recentlySearchedItems");
 
-                            if(recentlySearchedItems.contains(searchedItem)){
-                                recentlySearchedItems.remove(searchedItem);
+                            ArrayList<Material> recentlySearchedItemTypes = new ArrayList<>();
+                            recentlySearchedItems.forEach(itemStack -> recentlySearchedItemTypes.add(itemStack.getType()));
+
+                            if(recentlySearchedItemTypes.contains(searchedItem.getType())){
+                                recentlySearchedItems.removeIf(itemStack -> itemStack.getType().equals(searchedItem.getType()));
                             }
                             else if(recentlySearchedItems.size() >= 7){
                                 recentlySearchedItems.remove(0);
@@ -154,16 +156,15 @@ public class DisplayItemGui {
             // Iterate through each ItemStack in the recentlySearchedItems path in the data.yml and add them to the pane
             // ---------------------------------------------------------------------------------------------------------
             for(ItemStack recentlySearchedItem : recentlySearchedItems){
-                ItemStack itemStack = processItemStack(recentlySearchedItem.getType(), recentlySearchedItem.getType().toString().toLowerCase().replace("_", " "));
-                GuiItem recentlySearchedGuiItem = new GuiItem(itemStack, event -> {
-                    event.getWhoClicked().sendMessage("recentlySearchedGuiItem.getItemMeta().getDisplayName(): " + itemStack.getItemMeta().getDisplayName());
-                    data.getConfig().set("menuGroupID." + world.getName() + ".item", itemStack);
+                ItemStack item = processItemStackWithVanillaName(recentlySearchedItem.getType());
+                GuiItem recentlySearchedGuiItem = new GuiItem(item, event -> {
+                    data.getConfig().set("menuGroupID." + world.getName() + ".item", item);
 
                     ArrayList<ItemStack> recentlySearchedItemsEdit = new ArrayList<>(recentlySearchedItems);
 
                     // Do this to put the item back at the beginning
-                    recentlySearchedItemsEdit.remove(itemStack);
-                    recentlySearchedItemsEdit.add(itemStack);
+                    recentlySearchedItemsEdit.remove(recentlySearchedItem);
+                    recentlySearchedItemsEdit.add(item);
 
                     data.getConfig().set("recentlySearchedItems", recentlySearchedItemsEdit);
                     data.saveConfig();
@@ -186,15 +187,15 @@ public class DisplayItemGui {
 
         ArrayList<ItemStack> commonlyUsedItems = new ArrayList<>();
 
-        commonlyUsedItems.add(processItemStack(Material.GRASS_BLOCK));
-        commonlyUsedItems.add(processItemStack(Material.OAK_DOOR));
-        commonlyUsedItems.add(processItemStack(Material.IRON_SWORD));
-        commonlyUsedItems.add(processItemStack(Material.NETHER_STAR));
-        commonlyUsedItems.add(processItemStack(Material.IRON_PICKAXE));
-        commonlyUsedItems.add(processItemStack(Material.BEACON));
-        commonlyUsedItems.add(processItemStack(Material.GLOWSTONE));
-        commonlyUsedItems.add(processItemStack(Material.FURNACE));
-        commonlyUsedItems.add(processItemStack(Material.REDSTONE_BLOCK));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.GRASS_BLOCK));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.OAK_DOOR));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.IRON_SWORD));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.NETHER_STAR));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.IRON_PICKAXE));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.BEACON));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.GLOWSTONE));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.FURNACE));
+        commonlyUsedItems.add(processItemStackWithVanillaName(Material.REDSTONE_BLOCK));
 
         for(ItemStack commonlyUsedItem : commonlyUsedItems){
             GuiItem commonlyUsedGuiItem = new GuiItem(commonlyUsedItem, event -> {
@@ -213,7 +214,7 @@ public class DisplayItemGui {
         // -------------------------------------------------------------------------------------------------------------
         StaticPane navigationPane = new StaticPane(0, 3, 9, 1);
 
-        GuiItem navigationBackGuiItem = new GuiItem(processItemStack(Material.ARROW), event -> {
+        GuiItem navigationBackGuiItem = new GuiItem(processItemStack(Material.ARROW, "Back"), event -> {
             SettingsGui settingsGui = new SettingsGui((Player) event.getWhoClicked(), world);
             settingsGui.getGui().show(event.getWhoClicked());
         });
@@ -237,7 +238,11 @@ public class DisplayItemGui {
         return item;
     }
 
-    ItemStack processItemStack(Material material){
-        return processItemStack(material, new ItemStack(material).getItemMeta().getDisplayName());
+    ItemStack processItemStackWithVanillaName(Material material){
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(itemMeta);
+        return item;
     }
 }

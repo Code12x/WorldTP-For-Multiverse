@@ -42,7 +42,7 @@ public class SelectWorldToEditGui {
             String displayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 
             ItemMeta itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName(displayName);
+            itemMeta.setDisplayName(menuGroup + " (" + displayName + ")");
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             item.setItemMeta(itemMeta);
 

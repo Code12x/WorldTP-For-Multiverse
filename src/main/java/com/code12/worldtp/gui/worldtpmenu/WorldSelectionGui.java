@@ -1,4 +1,4 @@
-package com.code12.worldtp.gui;
+package com.code12.worldtp.gui.worldtpmenu;
 
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;

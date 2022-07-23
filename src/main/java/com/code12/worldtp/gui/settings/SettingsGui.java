@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+
 public class SettingsGui {
 
     DataManager data = References.data;
@@ -92,7 +94,20 @@ public class SettingsGui {
             settingsGui.getGui().show(player);
         });
 
-        GuiItem whitelistInfoGuiItem = new GuiItem(processItemStack(Material.BOOK, "Permission worldtp.worldtp is needed to select this world."));
+        ItemStack whitelistInfoItem = new ItemStack(Material.BOOK);
+        ItemMeta whitelistInfoItemMeta = whitelistInfoItem.getItemMeta();
+        whitelistInfoItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        whitelistInfoItemMeta.setDisplayName("About WorldTP Whitelist");
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add("Players without the permission");
+        lore.add("\"worldtp.worldtp\" will not be");
+        lore.add("able to see this world in the");
+        lore.add("WorldTP menu if this world's");
+        lore.add("whitelist is on");
+        whitelistInfoItemMeta.setLore(lore);
+        whitelistInfoItem.setItemMeta(whitelistInfoItemMeta);
+
+        GuiItem whitelistInfoGuiItem = new GuiItem(whitelistInfoItem);
 
         settingsPane.addItem(whitelistGuiItem, 5, 1);
         settingsPane.addItem(whitelistInfoGuiItem, 5, 2);
