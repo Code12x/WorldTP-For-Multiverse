@@ -3,6 +3,7 @@ package com.code12.worldtp.gui.worldtpmenu;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -50,7 +51,10 @@ public class DimensionsSelectionGui {
         // Spawn GuiItem
         // -------------------------------------------------------------------------------------------------------------
         if(allowSpawn){
-            ItemStack spawnItem = processItemStack(Material.GRASS_BLOCK, "Spawn");
+            ItemStack spawnItem = new ProcessItemStack()
+                    .setMaterial(Material.GRASS_BLOCK)
+                    .setDisplayName("Spawn")
+                    .getItemStack();
 
             GuiItem guiItem = new GuiItem(spawnItem, event -> {
                 if (data.getConfig().getString("worldGroup." + worldGroupName + ".overworld") == null) {
@@ -74,7 +78,10 @@ public class DimensionsSelectionGui {
         // Nether GuiItem
         // -------------------------------------------------------------------------------------------------------------
         if(allowNether){
-            ItemStack netherItem = processItemStack(Material.NETHERRACK, "Nether");
+            ItemStack netherItem = new ProcessItemStack()
+                    .setMaterial(Material.NETHERRACK)
+                    .setDisplayName("Nether")
+                    .getItemStack();
 
             GuiItem guiItem = new GuiItem(netherItem, event -> {
                 if(data.getConfig().getString("worldGroup." + worldGroupName + ".nether") == null){
@@ -97,7 +104,10 @@ public class DimensionsSelectionGui {
         // End GuiItem
         // -------------------------------------------------------------------------------------------------------------
         if(allowEnd){
-            ItemStack endItem = processItemStack(Material.END_STONE, "End");
+            ItemStack endItem = new ProcessItemStack()
+                    .setMaterial(Material.END_STONE)
+                    .setDisplayName("End")
+                    .getItemStack();
 
             GuiItem guiItem = new GuiItem(endItem, event -> {
                 if(data.getConfig().getString("worldGroup." + worldGroupName + ".the_end") == null){
@@ -120,7 +130,10 @@ public class DimensionsSelectionGui {
         // -------------------------------------------------------------------------------------------------------------
         // Resume GuiItem
         // -------------------------------------------------------------------------------------------------------------
-        ItemStack resumeItem = processItemStack(Material.LEATHER_BOOTS, "Resume");
+        ItemStack resumeItem = new ProcessItemStack()
+                .setMaterial(Material.LEATHER_BOOTS)
+                .setDisplayName("Resume")
+                .getItemStack();
 
         GuiItem resumeGuiItem = new GuiItem(resumeItem, event -> {
             Location locationToTP;
@@ -152,7 +165,10 @@ public class DimensionsSelectionGui {
         // -------------------------------------------------------------------------------------------------------------
         StaticPane navigationPane = new StaticPane(0, 1, 9, 1);
 
-        ItemStack backItem = processItemStack(Material.ARROW, "Back");
+        ItemStack backItem = new ProcessItemStack()
+                .setMaterial(Material.ARROW)
+                .setDisplayName("Back")
+                .getItemStack();
 
         GuiItem backGuiItem = new GuiItem(backItem, event -> {
             WorldSelectionGui worldSelectionGui = new WorldSelectionGui(player);
@@ -166,14 +182,5 @@ public class DimensionsSelectionGui {
         // =============================================================================================================
         gui.addPane(dimensionsPane);
         gui.addPane(navigationPane);
-    }
-
-    public ItemStack processItemStack(Material material, String name){
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        itemMeta.setDisplayName(name);
-        item.setItemMeta(itemMeta);
-        return item;
     }
 }

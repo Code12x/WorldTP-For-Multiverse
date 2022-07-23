@@ -2,6 +2,7 @@ package com.code12.worldtp.gui.settings;
 
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
@@ -14,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SettingsGui {
 
@@ -36,12 +39,20 @@ public class SettingsGui {
         // -------------------------------------------------------------------------------------------------------------
         StaticPane navigationPane = new StaticPane(0, 3, 9, 1);
 
-        GuiItem backArrowGuiItem = new GuiItem(processItemStack(Material.ARROW, "Back"), event -> {
+        GuiItem backArrowGuiItem = new GuiItem(new ProcessItemStack()
+                .setMaterial(Material.ARROW)
+                .setDisplayName("Back")
+                .getItemStack()
+                , event -> {
             SelectWorldToEditGui selectWorldToEditGui = new SelectWorldToEditGui(player);
             selectWorldToEditGui.getGui().show(player);
         });
 
-        GuiItem closeGuiItem = new GuiItem(processItemStack(Material.RED_WOOL, "Close"), event -> {
+        GuiItem closeGuiItem = new GuiItem(new ProcessItemStack()
+                .setMaterial(Material.RED_WOOL)
+                .setDisplayName("Close")
+                .getItemStack()
+                , event -> {
             event.getView().close();
         });
 
@@ -58,7 +69,11 @@ public class SettingsGui {
         // displayNameGuiItem
         // -------------------------------------------------------------------------------------------------------------
         String displayName = data.getConfig().getString("menuGroupID." + worldName + ".displayName");
-        GuiItem displayNameGuiItem = new GuiItem(processItemStack(Material.OAK_SIGN, "Change Display Name (currently: " + displayName + ")"), event -> {
+        GuiItem displayNameGuiItem = new GuiItem(new ProcessItemStack()
+                .setMaterial(Material.OAK_SIGN)
+                .setDisplayName("Change Display Name (currently: " + displayName + ")")
+                .getItemStack(),
+                event -> {
             DisplayNameGui textInputGui = new DisplayNameGui("Enter the Name to be Displayed", worldName);
             textInputGui.getGui().show(event.getWhoClicked());
         });
@@ -85,7 +100,10 @@ public class SettingsGui {
         // -------------------------------------------------------------------------------------------------------------
         Boolean adminOnly = data.getConfig().getBoolean("menuGroupID." + worldName + ".admin");
 
-        ItemStack whitelistItem = processItemStack(Material.PAPER, "Toggle Whitelist (Currently: " + (adminOnly ? "ON" : "OFF") + ")");
+        ItemStack whitelistItem =new ProcessItemStack()
+                .setMaterial(Material.PAPER)
+                .setDisplayName("Toggle Whitelist (Currently: " + (adminOnly ? "ON" : "OFF") + ")")
+                .getItemStack();
 
         GuiItem whitelistGuiItem = new GuiItem(whitelistItem, event -> {
             data.getConfig().set("menuGroupID." + worldName + ".admin", !adminOnly);
@@ -94,18 +112,19 @@ public class SettingsGui {
             settingsGui.getGui().show(player);
         });
 
-        ItemStack whitelistInfoItem = new ItemStack(Material.BOOK);
-        ItemMeta whitelistInfoItemMeta = whitelistInfoItem.getItemMeta();
-        whitelistInfoItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        whitelistInfoItemMeta.setDisplayName("About WorldTP Whitelist");
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Players without the permission");
         lore.add("\"worldtp.worldtp\" will not be");
         lore.add("able to see this world in the");
         lore.add("WorldTP menu if this world's");
         lore.add("whitelist is on");
-        whitelistInfoItemMeta.setLore(lore);
-        whitelistInfoItem.setItemMeta(whitelistInfoItemMeta);
+
+        ItemStack whitelistInfoItem = new ProcessItemStack()
+                .setMaterial(Material.BOOK)
+                .setDisplayName("About WorldTP Whitelist")
+                .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
+                .setLore(lore)
+                .getItemStack();
 
         GuiItem whitelistInfoGuiItem = new GuiItem(whitelistInfoItem);
 
@@ -115,7 +134,10 @@ public class SettingsGui {
         // -------------------------------------------------------------------------------------------------------------
         // dimensionsConfigGuiItem
         // -------------------------------------------------------------------------------------------------------------
-        ItemStack dimensionsConfigItem = processItemStack(Material.END_PORTAL_FRAME, "Dimensions Configuration");
+        ItemStack dimensionsConfigItem = new ProcessItemStack()
+                .setMaterial(Material.END_PORTAL_FRAME)
+                .setDisplayName("Dimensions Configuration")
+                .getItemStack();
 
         GuiItem dimensionsConfigGuiItem = new GuiItem(dimensionsConfigItem, event -> {
             DimensionsConfigGui dimensionsConfigGui = new DimensionsConfigGui(player, world);
@@ -129,14 +151,5 @@ public class SettingsGui {
         // Add settingsPane to gui
         // -------------------------------------------------------------------------------------------------------------
         gui.addPane(settingsPane);
-    }
-
-    public ItemStack processItemStack(Material material, String name){
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        itemMeta.setDisplayName(name);
-        item.setItemMeta(itemMeta);
-        return item;
     }
 }

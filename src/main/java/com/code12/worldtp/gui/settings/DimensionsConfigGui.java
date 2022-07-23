@@ -2,6 +2,7 @@ package com.code12.worldtp.gui.settings;
 
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
@@ -34,22 +35,34 @@ public class DimensionsConfigGui {
         for (String dimension : dimensions){
             ItemStack itemStack;
             if(dimension.equals("Spawn")){
-                itemStack = processItemStack(Material.GRASS_BLOCK, "Allow Spawn (Currently: " +
-                        config.getConfig().getBoolean(world.getName() + ".Spawn_Teleporting") + ")");
+                itemStack = new ProcessItemStack()
+                        .setMaterial(Material.GRASS_BLOCK)
+                        .setDisplayName("Allow Spawn (Currently: " +
+                                config.getConfig().getBoolean(world.getName() + ".Spawn_Teleporting") + ")")
+                        .getItemStack();
             }
 
             else if(dimension.equals("Nether")){
-                itemStack = processItemStack(Material.NETHERRACK, "Allow Nether (Currently: " +
-                        config.getConfig().getBoolean(world.getName() + ".Nether_Teleporting") + ")");
+                itemStack = new ProcessItemStack()
+                        .setMaterial(Material.NETHERRACK)
+                        .setDisplayName("Allow Nether (Currently: " +
+                                config.getConfig().getBoolean(world.getName() + ".Nether_Teleporting") + ")")
+                        .getItemStack();
             }
 
             else if(dimension.equals("End")){
-                itemStack = processItemStack(Material.END_STONE, "Allow End (Currently: " +
-                        config.getConfig().getBoolean(world.getName() + ".End_Teleporting") + ")");
+                itemStack =new ProcessItemStack()
+                        .setMaterial(Material.END_STONE)
+                        .setDisplayName("Allow End (Currently: " +
+                                config.getConfig().getBoolean(world.getName() + ".End_Teleporting") + ")")
+                        .getItemStack();
             }
 
             else{
-                itemStack = processItemStack(Material.BARRIER, "ERROR");
+                itemStack = new ProcessItemStack()
+                        .setMaterial(Material.BARRIER)
+                        .setDisplayName("ERROR")
+                        .getItemStack();
             }
 
             GuiItem dimensionGuiItem = new GuiItem(itemStack, event -> {
@@ -69,7 +82,11 @@ public class DimensionsConfigGui {
         // -------------------------------------------------------------------------------------------------------------
         StaticPane navigationPane = new StaticPane(0, 1, 9, 1);
 
-        navigationPane.addItem(new GuiItem(processItemStack(Material.ARROW, "Back"), event -> {
+        navigationPane.addItem(new GuiItem(new ProcessItemStack()
+                .setMaterial(Material.ARROW)
+                .setDisplayName("Back")
+                .getItemStack(),
+                event -> {
             SettingsGui settingsGui = new SettingsGui(player, world);
             settingsGui.getGui().show(player);
         }), 0, 0);
@@ -83,14 +100,5 @@ public class DimensionsConfigGui {
 
     public ChestGui getGui(){
         return gui;
-    }
-
-    public ItemStack processItemStack(Material material, String name){
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        itemMeta.setDisplayName(name);
-        item.setItemMeta(itemMeta);
-        return item;
     }
 }

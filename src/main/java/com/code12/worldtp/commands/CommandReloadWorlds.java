@@ -50,6 +50,13 @@ public class CommandReloadWorlds implements CommandExecutor {
             }
         }
 
+        if(menuGroupList.size() > 54){
+            sender.sendMessage(ChatColor.RED + "ERROR!" + ChatColor.RESET + " There are too many worlds loaded for this server." +
+                    "WorldTP only supports up to 54 worlds, because it is highly unlikely that anyone will have more than 54 worlds" +
+                    "in one server. If you have any questions about this, submit an issue on the github issues page.");
+            return true;
+        }
+
         //gets the menuGroupList and registers them with WorldTPWorldGroup.registerWorldGroup()
         for(String worldGroup : menuGroupList){
             ItemStack item = new ItemStack(Material.GRASS_BLOCK);

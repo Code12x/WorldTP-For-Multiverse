@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectWorldToEditGui {
@@ -24,7 +25,17 @@ public class SelectWorldToEditGui {
         // -------------------------------------------------------------------------------------------------------------
         // gui init
         // -------------------------------------------------------------------------------------------------------------
-        gui = new ChestGui(4, "Settings: Select World");
+        int numberOfWorlds = data.getConfig().getStringList("menuGroupList").size();
+
+        int rows = 1;
+        int slots = 9;
+
+        while (numberOfWorlds / slots > 1) {
+            rows ++;
+            slots += 9;
+        }
+
+        gui = new ChestGui(rows, "Settings: Select World");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         StaticPane pane = new StaticPane(0, 0, 9, 4);
@@ -61,9 +72,16 @@ public class SelectWorldToEditGui {
             }
         }
 
-        // -------------------------------------------------------------------------------------------------------------
-        // Add pane to gui
-        // -------------------------------------------------------------------------------------------------------------
         gui.addPane(pane);
+
+        // -------------------------------------------------------------------------------------------------------------
+        // customizationPane
+        // -------------------------------------------------------------------------------------------------------------
+        StaticPane customizationPane = new StaticPane(0, rows + 1, 9, 1);
+
+        // -------------------------------------------------------------------------------------------------------------
+        // customizeGuiItem
+        // -------------------------------------------------------------------------------------------------------------
+
     }
 }
