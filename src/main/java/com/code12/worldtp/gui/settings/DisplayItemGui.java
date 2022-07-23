@@ -77,7 +77,8 @@ public class DisplayItemGui {
                 // GuiItem
                 // -----------------------------------------------------------------------------------------------------
                 try{
-                    ItemStack searchedItem = processItemStack(Material.valueOf(formattedRenameText));
+                    Material material = Material.valueOf(formattedRenameText);
+                    ItemStack searchedItem = processItemStack(material, material.toString().toLowerCase().replace("_", " "));
 
                     GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
                         data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
@@ -153,15 +154,16 @@ public class DisplayItemGui {
             // Iterate through each ItemStack in the recentlySearchedItems path in the data.yml and add them to the pane
             // ---------------------------------------------------------------------------------------------------------
             for(ItemStack recentlySearchedItem : recentlySearchedItems){
-                GuiItem recentlySearchedGuiItem = new GuiItem(recentlySearchedItem, event -> {
-                    event.getWhoClicked().sendMessage("recentlySearchedGuiItem.getItemMeta().getDisplayName(): " + recentlySearchedItem.getItemMeta().getDisplayName());
-                    data.getConfig().set("menuGroupID." + world.getName() + ".item", recentlySearchedItem);
+                ItemStack itemStack = processItemStack(recentlySearchedItem.getType(), recentlySearchedItem.getType().toString().toLowerCase().replace("_", " "));
+                GuiItem recentlySearchedGuiItem = new GuiItem(itemStack, event -> {
+                    event.getWhoClicked().sendMessage("recentlySearchedGuiItem.getItemMeta().getDisplayName(): " + itemStack.getItemMeta().getDisplayName());
+                    data.getConfig().set("menuGroupID." + world.getName() + ".item", itemStack);
 
                     ArrayList<ItemStack> recentlySearchedItemsEdit = new ArrayList<>(recentlySearchedItems);
 
                     // Do this to put the item back at the beginning
-                    recentlySearchedItemsEdit.remove(recentlySearchedItem);
-                    recentlySearchedItemsEdit.add(recentlySearchedItem);
+                    recentlySearchedItemsEdit.remove(itemStack);
+                    recentlySearchedItemsEdit.add(itemStack);
 
                     data.getConfig().set("recentlySearchedItems", recentlySearchedItemsEdit);
                     data.saveConfig();
