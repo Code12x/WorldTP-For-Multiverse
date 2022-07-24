@@ -2,17 +2,18 @@ package com.code12.worldtp.gui.settings;
 
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SelectWorldToEditGui {
@@ -38,15 +39,12 @@ public class SelectWorldToEditGui {
         gui = new ChestGui(rows, "Settings: Select World");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
-        StaticPane pane = new StaticPane(0, 0, 9, 4);
+        StaticPane pane = new StaticPane(0, 0, 9, rows);
 
         // -------------------------------------------------------------------------------------------------------------
         // Add the worlds in menuGroupList to pane
         // -------------------------------------------------------------------------------------------------------------
         List<String> menuGroupList = data.getConfig().getStringList("menuGroupList");
-
-        int x = 0;
-        int y = 0;
 
         for(String menuGroup : menuGroupList){
             ItemStack item = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item");
@@ -62,26 +60,33 @@ public class SelectWorldToEditGui {
                 settingsGui.getGui().show(player);
             });
 
-            pane.addItem(guiItem, x, y);
+            int itemPosition = data.getConfig().getInt("menuGroupID." + menuGroup + ".position");
 
-            // cool math B)
-            x++;
-            if(x >= 9){
-                x = 0;
-                y++;
-            }
+            int y = Math.floorDiv(itemPosition, 9);
+            int x = itemPosition - 9*y;
+
+            pane.addItem(guiItem, x, y);
         }
 
         gui.addPane(pane);
 
         // -------------------------------------------------------------------------------------------------------------
-        // customizationPane
+        // customizeOrderPane
         // -------------------------------------------------------------------------------------------------------------
-        StaticPane customizationPane = new StaticPane(0, rows + 1, 9, 1);
+        StaticPane customizeOrderPane = new StaticPane(0, rows + 1, 9, 1);
 
         // -------------------------------------------------------------------------------------------------------------
-        // customizeGuiItem
+        // customizeOrderGuiItem
         // -------------------------------------------------------------------------------------------------------------
+        ItemStack customizeOrderItem = new ProcessItemStack()
+                .setMaterial(Material.HOPPER)
+                .setDisplayName("Customize the order that the items appear in")
+                .getItemStack();
 
+        int finalRows = rows;
+        GuiItem customizeOrderGuiItem = new GuiItem(customizeOrderItem, event -> {
+            CustomizeOrderGui customizeOrderGui = new CustomizeOrderGui(finalRows, menuGroupList);
+            customizeOrderGui.getGui().show(player);
+        });
     }
 }

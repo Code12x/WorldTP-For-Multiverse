@@ -61,17 +61,27 @@ public class CommandReloadWorlds implements CommandExecutor {
         for(String worldGroup : menuGroupList){
             ItemStack item = new ItemStack(Material.GRASS_BLOCK);
             String displayName = worldGroup;
+            int position = menuGroupList.indexOf(worldGroup);
+
             if(data.getConfig().getItemStack("menuGroupID." + worldGroup + ".item") != null){
                 item = data.getConfig().getItemStack("menuGroupID." + worldGroup + ".item");
             }
+
             if(data.getConfig().getString("menuGroupID." + worldGroup + ".displayName") != null){
                 displayName = data.getConfig().getString("menuGroupID." + worldGroup + ".displayName");
             }
+
+            if(data.getConfig().getString("menuGroupID." + worldGroup + ".position") != null){
+                position = data.getConfig().getInt("menuGroupID." + worldGroup + ".position");
+            }
+
             Boolean adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
-            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(worldGroup, displayName);
+
+            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(worldGroup, displayName, position);
             worldTPWorldGroup.setItem(item);
             worldTPWorldGroup.setAdminOnly(adminOnly);
             worldTPWorldGroup.registerWorldGroup();
+
             data.saveConfig();
 
             setConfig(worldGroup);
@@ -80,12 +90,12 @@ public class CommandReloadWorlds implements CommandExecutor {
                 WorldTPWorld world = new WorldTPWorld(Bukkit.getWorld(multiverseWorld.getName()));
                 if(world.getName().startsWith(worldGroup)){
                     String worldType = world.getWorldType();
-                    if(worldType.equals("overworld")){
-                        data.getConfig().set("worldGroup." + worldGroup + ".overworld", world.getName());
-                    }else if(worldType.equals("nether")){
-                        data.getConfig().set("worldGroup." + worldGroup + ".nether", world.getName());
-                    }else if(worldType.equals("the_end")){
-                        data.getConfig().set("worldGroup." + worldGroup + ".the_end", world.getName());
+                    switch (worldType) {
+                        case "overworld" ->
+                                data.getConfig().set("worldGroup." + worldGroup + ".overworld", world.getName());
+                        case "nether" -> data.getConfig().set("worldGroup." + worldGroup + ".nether", world.getName());
+                        case "the_end" ->
+                                data.getConfig().set("worldGroup." + worldGroup + ".the_end", world.getName());
                     }
                     data.saveConfig();
                 }

@@ -17,13 +17,15 @@ public class WorldTPWorldGroup {
 
     private String name;
     private String displayName;
+    private int position;
     @Setter @Getter private ItemStack item = new ItemStack(Material.GRASS_BLOCK);
     @Setter @Getter private Boolean adminOnly = false;
 
 
-    public WorldTPWorldGroup(String name, String displayName){
+    public WorldTPWorldGroup(String name, String displayName, int position){
         this.name = name;
         this.displayName = displayName;
+        this.position = position;
     }
 
     public void registerWorldGroup(){
@@ -32,12 +34,10 @@ public class WorldTPWorldGroup {
         worldList.add(name);
         data.getConfig().set("menuGroupList", worldList);
 
-        //add the name to "menuGroupID"
         data.getConfig().set("menuGroupID." + name + ".displayName", displayName);
         data.getConfig().set("menuGroupID." + name + ".item", item);
-
-        //set the admin-only variable for the world
         data.getConfig().set("menuGroupID." + name + ".admin", adminOnly);
+        data.getConfig().set("menuGroupID." + name + ".position", position);
 
         data.saveConfig();
     }
@@ -75,16 +75,5 @@ public class WorldTPWorldGroup {
 
         sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[!]" + ChatColor.RESET + ChatColor.YELLOW + "World " + name + " was successfully deleted.");
         sender.sendMessage(ChatColor.YELLOW + "Remaining Worlds:\n " + ChatColor.WHITE + data.getConfig().getStringList("menuGroupList"));
-    }
-
-    public void editWorldGroup(){
-        //add the name to "menuGroupID" in WorldTP config.yml
-        data.getConfig().set("menuGroupID." + name + ".displayName", displayName);
-        data.getConfig().set("menuGroupID." + name + ".item", item);
-
-        //set the admin-only variable for the world
-        data.getConfig().set("menuGroupID." + name + ".admin", adminOnly);
-
-        data.saveConfig();
     }
 }
