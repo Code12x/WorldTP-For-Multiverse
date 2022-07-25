@@ -3,6 +3,7 @@ package com.code12.worldtp.commands;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.code12.worldtp.worldtpobjects.WorldTPWorldGroup;
 import com.onarandombox.MultiverseCore.MultiverseCore;
@@ -38,7 +39,6 @@ public class CommandReloadWorlds implements CommandExecutor {
 
         /* Iterate through each world and then adds the world based on its name. */
         //gets a list of all the overworlds.
-        data.getConfig().set("menuGroupList", null);
 
         ArrayList<String> menuGroupList = new ArrayList<>();
         for(MultiverseWorld multiverseWorld : multiverseWorldList){
@@ -58,37 +58,38 @@ public class CommandReloadWorlds implements CommandExecutor {
         }
 
         //gets the menuGroupList and registers them with WorldTPWorldGroup.registerWorldGroup()
-        for(String worldGroup : menuGroupList){
-            ItemStack item = new ItemStack(Material.GRASS_BLOCK);
-            String displayName = worldGroup;
+        data.getConfig().set("menuGroupList", null);
+        data.saveConfig();
+
+        for(String worldGroup : menuGroupList) {
+            ItemStack item;
+            String displayName;
+            boolean adminOnly;
             int position = menuGroupList.indexOf(worldGroup);
 
-            if(data.getConfig().getItemStack("menuGroupID." + worldGroup + ".item") != null){
+            if (data.getConfig().get("menuGroupID." + worldGroup) != null) { // worldGroup HAS been registered before
                 item = data.getConfig().getItemStack("menuGroupID." + worldGroup + ".item");
-            }
-
-            if(data.getConfig().getString("menuGroupID." + worldGroup + ".displayName") != null){
                 displayName = data.getConfig().getString("menuGroupID." + worldGroup + ".displayName");
+                adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
+            } else { // worldGroup has NOT been registered before
+                item = new ProcessItemStack().setMaterial(Material.GRASS_BLOCK).getItemStack();
+                displayName = worldGroup;
+                adminOnly = false;
             }
 
-            if(data.getConfig().getString("menuGroupID." + worldGroup + ".position") != null){
-                position = data.getConfig().getInt("menuGroupID." + worldGroup + ".position");
-            }
-
-            Boolean adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
-
-            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(worldGroup, displayName, position);
+            WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(worldGroup);
             worldTPWorldGroup.setItem(item);
+            worldTPWorldGroup.setDisplayName(displayName);
             worldTPWorldGroup.setAdminOnly(adminOnly);
-            worldTPWorldGroup.registerWorldGroup();
+            worldTPWorldGroup.setPosition(position);
 
-            data.saveConfig();
+            worldTPWorldGroup.registerWorldGroup();
 
             setConfig(worldGroup);
 
-            for(MultiverseWorld multiverseWorld : multiverseWorldList){
+            for (MultiverseWorld multiverseWorld : multiverseWorldList) {
                 WorldTPWorld world = new WorldTPWorld(Bukkit.getWorld(multiverseWorld.getName()));
-                if(world.getName().startsWith(worldGroup)){
+                if (world.getName().startsWith(worldGroup)) {
                     String worldType = world.getWorldType();
                     switch (worldType) {
                         case "overworld" ->

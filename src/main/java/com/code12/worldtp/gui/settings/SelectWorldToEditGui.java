@@ -2,6 +2,7 @@ package com.code12.worldtp.gui.settings;
 
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.GuiMath;
 import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -62,8 +63,9 @@ public class SelectWorldToEditGui {
 
             int itemPosition = data.getConfig().getInt("menuGroupID." + menuGroup + ".position");
 
-            int y = Math.floorDiv(itemPosition, 9);
-            int x = itemPosition - 9*y;
+            List<Integer> cords = GuiMath.cordsFromPosition(itemPosition, 9);
+            int x = cords.get(0);
+            int y = cords.get(1);
 
             pane.addItem(guiItem, x, y);
         }
@@ -73,7 +75,7 @@ public class SelectWorldToEditGui {
         // -------------------------------------------------------------------------------------------------------------
         // customizeOrderPane
         // -------------------------------------------------------------------------------------------------------------
-        StaticPane customizeOrderPane = new StaticPane(0, rows + 1, 9, 1);
+        StaticPane customizeOrderPane = new StaticPane(0, rows, 9, 1);
 
         // -------------------------------------------------------------------------------------------------------------
         // customizeOrderGuiItem
@@ -88,5 +90,9 @@ public class SelectWorldToEditGui {
             CustomizeOrderGui customizeOrderGui = new CustomizeOrderGui(finalRows, menuGroupList);
             customizeOrderGui.getGui().show(player);
         });
+
+        customizeOrderPane.addItem(customizeOrderGuiItem, 4, 0);
+
+        gui.addPane(customizeOrderPane);
     }
 }

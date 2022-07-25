@@ -24,9 +24,8 @@ public class CommandDeleteWorld implements CommandExecutor {
         }
 
         String world = args[0];
-        String displayName = data.getConfig().getString("menuGroupID." + world + ".displayName");
 
-        WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(world, displayName);
+        WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(world);
 
         worldTPWorldGroup.deleteWorldGroup(sender);
 
