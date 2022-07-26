@@ -37,7 +37,7 @@ public class SelectWorldToEditGui {
             slots += 9;
         }
 
-        gui = new ChestGui(rows, "Settings: Select World");
+        gui = new ChestGui(rows + 1, "Settings: Select World");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         StaticPane pane = new StaticPane(0, 0, 9, rows);

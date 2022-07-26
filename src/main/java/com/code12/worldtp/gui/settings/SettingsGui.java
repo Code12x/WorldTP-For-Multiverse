@@ -48,16 +48,7 @@ public class SettingsGui {
             selectWorldToEditGui.getGui().show(player);
         });
 
-        GuiItem closeGuiItem = new GuiItem(new ProcessItemStack()
-                .setMaterial(Material.RED_WOOL)
-                .setDisplayName("Close")
-                .getItemStack()
-                , event -> {
-            event.getView().close();
-        });
-
         navigationPane.addItem(backArrowGuiItem, 0, 0);
-        navigationPane.addItem(closeGuiItem, 8, 0);
         gui.addPane(navigationPane);
 
         // -------------------------------------------------------------------------------------------------------------

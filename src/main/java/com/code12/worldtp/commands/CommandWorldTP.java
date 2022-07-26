@@ -1,6 +1,5 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.gui.worldtpmenu.WorldSelectionGui;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 public class CommandWorldTP implements CommandExecutor {
 
     private final DataManager data = References.data;
-    private final ConfigManager config = References.config;
 
     // the command
     @Override

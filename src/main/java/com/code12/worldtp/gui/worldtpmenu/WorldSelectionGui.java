@@ -3,10 +3,13 @@ package com.code12.worldtp.gui.worldtpmenu;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.GuiMath;
+import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,8 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class WorldSelectionGui {
 
@@ -48,6 +50,11 @@ public class WorldSelectionGui {
             menuGroupList = notAdminWorlds;
         }
 
+        HashMap<String, Integer> worldPositionMap = new HashMap<>();
+        menuGroupList.forEach(menuGroup -> worldPositionMap.put(menuGroup, data.getConfig().getInt("menuGroupID." + menuGroup + ".position")));
+
+        menuGroupList = sortWorldsFromPositions(worldPositionMap);
+
         int rows = 1;
         int slots = 9;
 
@@ -65,7 +72,7 @@ public class WorldSelectionGui {
         // Add menuGroups to the worldsPane
         // -------------------------------------------------------------------------------------------------------------
         for (String menuGroup : menuGroupList) {
-            ItemStack menuGroupItem = new ItemStack(Material.GRASS_BLOCK);
+            ItemStack menuGroupItem = new ProcessItemStack().setMaterial(Material.GRASS_BLOCK).getItemStack();
             String menuGroupDisplayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 
             if(data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item") != null){
@@ -113,11 +120,23 @@ public class WorldSelectionGui {
                     player.teleport(locationToTP);
                 }
             });
+
             worldsPane.addItem(menuGroupGuiItem);
         }
         // -------------------------------------------------------------------------------------------------------------
         // Add panes to gui
         // -------------------------------------------------------------------------------------------------------------
         gui.addPane(worldsPane);
+    }
+
+    private List<String> sortWorldsFromPositions(HashMap<String, Integer> map){
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(map.entrySet());
+
+        list.sort(Map.Entry.comparingByValue());
+
+        ArrayList<String> temp = new ArrayList<>();
+        list.forEach(entry -> temp.add(entry.getKey()));
+
+        return temp;
     }
 }
