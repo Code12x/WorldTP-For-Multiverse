@@ -16,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -72,15 +73,14 @@ public class WorldSelectionGui {
         // Add menuGroups to the worldsPane
         // -------------------------------------------------------------------------------------------------------------
         for (String menuGroup : menuGroupList) {
-            ItemStack menuGroupItem = new ProcessItemStack().setMaterial(Material.GRASS_BLOCK).getItemStack();
+            Material material = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType() != null ?
+                    data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType() : Material.GRASS_BLOCK;
+
             String menuGroupDisplayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 
-            if(data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item") != null){
-                menuGroupItem = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item");
-                ItemMeta menuGroupItemMeta = menuGroupItem.getItemMeta();
-                menuGroupItemMeta.setDisplayName(menuGroupDisplayName);
-                menuGroupItem.setItemMeta(menuGroupItemMeta);
-            }
+            ItemStack menuGroupItem = new ProcessItemStack().setMaterial(material)
+                    .setDisplayName(menuGroupDisplayName)
+                    .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 
             Boolean spawn = config.getConfig().getBoolean(menuGroup + ".Spawn_Teleporting");
             Boolean nether = config.getConfig().getBoolean(menuGroup + ".Nether_Teleporting");

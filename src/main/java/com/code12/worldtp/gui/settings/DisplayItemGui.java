@@ -8,6 +8,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.AnvilGui;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -89,7 +90,8 @@ public class DisplayItemGui {
                 // -----------------------------------------------------------------------------------------------------
                 try{
                     Material material = Material.valueOf(formattedRenameText);
-                    ItemStack searchedItem = new ProcessItemStack().setMaterial(material).getItemStack();
+                    ItemStack searchedItem = new ProcessItemStack().setMaterial(material)
+                            .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 
                     GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
                         data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
@@ -121,10 +123,9 @@ public class DisplayItemGui {
 
                     mainPain.addItem(searchedGuiItem, 0, 0);
                 }catch (Exception e){
-                    ItemStack noResultsItem = new ItemStack(Material.BARRIER);
-                    ItemMeta noResultsItemItemMeta = noResultsItem.getItemMeta();
-                    noResultsItemItemMeta.setDisplayName("No results for \"" + renameText + "\"");
-                    noResultsItem.setItemMeta(noResultsItemItemMeta);
+                    ItemStack noResultsItem = new ProcessItemStack().setMaterial(Material.BARRIER)
+                            .setDisplayName("No results for \"" + renameText + "\"").setChatColor(ChatColor.RED)
+                            .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 
                     GuiItem noResultsGuiItem = new GuiItem(noResultsItem, selectNoResultsItem -> {
                         SettingsGui settingsGui = new SettingsGui((Player) selectNoResultsItem.getWhoClicked(), world);
@@ -169,6 +170,7 @@ public class DisplayItemGui {
             for(ItemStack recentlySearchedItem : recentlySearchedItems){
                 ItemStack item = new ProcessItemStack()
                         .setMaterial(recentlySearchedItem.getType())
+                        .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
                         .getItemStack();
                 GuiItem recentlySearchedGuiItem = new GuiItem(item, event -> {
                     data.getConfig().set("menuGroupID." + world.getName() + ".item", item);
@@ -198,17 +200,15 @@ public class DisplayItemGui {
         // -------------------------------------------------------------------------------------------------------------
         StaticPane commonlyUsedItemsPane = new StaticPane(0, 2, 9, 1);
 
+        List<Material> commonlyUsedMaterials = List.of(Material.GRASS_BLOCK, Material.OAK_DOOR, Material.IRON_SWORD,
+                Material.NETHER_STAR, Material.IRON_PICKAXE, Material.BEACON, Material.GLOWSTONE, Material.FURNACE, Material.REDSTONE_BLOCK);
+
         ArrayList<ItemStack> commonlyUsedItems = new ArrayList<>();
 
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.GRASS_BLOCK).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.OAK_DOOR).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.IRON_SWORD).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.NETHER_STAR).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.IRON_PICKAXE).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.BEACON).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.GLOWSTONE).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.FURNACE).getItemStack());
-        commonlyUsedItems.add(new ProcessItemStack().setMaterial(Material.REDSTONE_BLOCK).getItemStack());
+        commonlyUsedMaterials.forEach(material -> commonlyUsedItems.add(new ProcessItemStack()
+                .setMaterial(material)
+                .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
+                .getItemStack()));
 
         for(ItemStack commonlyUsedItem : commonlyUsedItems){
             GuiItem commonlyUsedGuiItem = new GuiItem(commonlyUsedItem, event -> {

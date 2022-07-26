@@ -9,6 +9,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -48,13 +49,12 @@ public class SelectWorldToEditGui {
         List<String> menuGroupList = data.getConfig().getStringList("menuGroupList");
 
         for(String menuGroup : menuGroupList){
-            ItemStack item = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item");
+            Material material = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType();
             String displayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 
-            ItemMeta itemMeta = item.getItemMeta();
-            itemMeta.setDisplayName(menuGroup + " (" + displayName + ")");
-            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            item.setItemMeta(itemMeta);
+            ItemStack item = new ProcessItemStack().setMaterial(material)
+                    .setDisplayName(menuGroup + " (" + displayName + ")")
+                    .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 
             GuiItem guiItem = new GuiItem(item, event ->{
                 SettingsGui settingsGui = new SettingsGui((Player) event.getWhoClicked(), Bukkit.getWorld(menuGroup));

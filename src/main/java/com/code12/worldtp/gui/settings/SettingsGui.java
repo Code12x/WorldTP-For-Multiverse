@@ -7,6 +7,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -74,10 +75,10 @@ public class SettingsGui {
         // -------------------------------------------------------------------------------------------------------------
         // displayItemGuiItem
         // -------------------------------------------------------------------------------------------------------------
-        ItemStack displayItem = data.getConfig().getItemStack("menuGroupID." + worldName + ".item");
-        ItemMeta displayItemMeta = displayItem.getItemMeta();
-        displayItemMeta.setDisplayName("Change Display Item");
-        displayItem.setItemMeta(displayItemMeta);
+        Material material = data.getConfig().getItemStack("menuGroupID." + worldName + ".item").getType();
+        ItemStack displayItem = new ProcessItemStack().setMaterial(material)
+                .setDisplayName("Change Display Item").setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
+                .getItemStack();
 
         GuiItem displayItemGuiItem = new GuiItem(displayItem, event -> {
             DisplayItemGui displayItemGui = new DisplayItemGui(world);
@@ -104,11 +105,11 @@ public class SettingsGui {
         });
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.add("Players without the permission");
-        lore.add("\"worldtp.worldtp\" will not be");
-        lore.add("able to see this world in the");
-        lore.add("WorldTP menu if this world's");
-        lore.add("whitelist is on");
+        lore.add(ChatColor.GRAY + "Players without the permission");
+        lore.add(ChatColor.GRAY + "\"worldtp.worldtp\" will not be");
+        lore.add(ChatColor.GRAY + "able to see this world in the");
+        lore.add(ChatColor.GRAY + "WorldTP menu if this world's");
+        lore.add(ChatColor.GRAY + "whitelist is on");
 
         ItemStack whitelistInfoItem = new ProcessItemStack()
                 .setMaterial(Material.BOOK)

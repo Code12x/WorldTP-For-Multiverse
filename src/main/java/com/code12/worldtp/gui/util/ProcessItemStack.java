@@ -1,5 +1,6 @@
 package com.code12.worldtp.gui.util;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,7 @@ public class ProcessItemStack {
     private ItemStack itemStack;
     private Material material;
     private String displayName;
+    private ChatColor chatColor = ChatColor.WHITE;
     private List<ItemFlag> itemFlags;
     private List<String> lore;
 
@@ -21,6 +23,11 @@ public class ProcessItemStack {
 
     public ProcessItemStack setDisplayName(String displayName){
         this.displayName = displayName;
+        return this;
+    }
+
+    public ProcessItemStack setChatColor(ChatColor chatColor){
+        this.chatColor = chatColor;
         return this;
     }
 
@@ -44,7 +51,7 @@ public class ProcessItemStack {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         if(displayName != null) {
-            itemMeta.setDisplayName(displayName);
+            itemMeta.setDisplayName(chatColor + displayName);
         }
 
         if(itemFlags != null){
