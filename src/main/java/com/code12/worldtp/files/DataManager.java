@@ -4,10 +4,7 @@ import com.code12.worldtp.WorldTP;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.logging.Level;
 
 public class DataManager {
@@ -26,12 +23,6 @@ public class DataManager {
         if(this.configFile == null)
             this.configFile = new File(this.plugin.getDataFolder(), "data.yml");
         this.dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
-
-        InputStream defaultStream = this.plugin.getResource("data.yml");
-        if(defaultStream != null){
-            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
-            this.dataConfig.setDefaults(defaultConfig);
-        }
     }
 
     public FileConfiguration getConfig(){
@@ -43,7 +34,6 @@ public class DataManager {
 
     public void saveConfig(){
         if(this.dataConfig == null || this.configFile == null) {
-            plugin.getLogger().warning("this.dataConfig == null || this.configFile == null");
             return;
         }
 

@@ -13,6 +13,7 @@ import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class CustomizeOrderGui {
             String displayName = menuGroup + " (" + data.getConfig().getString("menuGroupID." + menuGroup + ".displayName") + ")";
             Material material = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType();
             ItemStack menuGroupItemStack = new ProcessItemStack().setMaterial(material)
-                    .setDisplayName(displayName).getItemStack();
+                    .setDisplayName(displayName).setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 
             int menuGroupPos = data.getConfig().getInt("menuGroupID." + menuGroup + ".position");
 
