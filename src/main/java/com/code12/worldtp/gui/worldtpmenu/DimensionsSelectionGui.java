@@ -4,6 +4,7 @@ import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.gui.util.ProcessItemStack;
+import com.code12.worldtp.gui.util.TeleportUtils;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -13,7 +14,8 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class DimensionsSelectionGui {
     private final ConfigManager config = References.config;
@@ -23,13 +25,11 @@ public class DimensionsSelectionGui {
     private ChestGui gui;
 
     public DimensionsSelectionGui(World worldGroup, Player player){
-        Location playerLocation = player.getLocation();
-
         String worldGroupName = worldGroup.getName();
         String worldGroupDisplayName = data.getConfig().getString("menuGroupID." + worldGroupName + ".displayName");
 
         WorldTPWorld worldToLeave = new WorldTPWorld(player.getWorld());
-        String worldGroupToLeave = worldToLeave.getWorldGroup();
+        String worldGroupToLeaveName = worldToLeave.getWorldGroup();
 
         gui = new ChestGui(2, "Dimensions for " + worldGroupDisplayName);
         gui.setOnGlobalClick(event -> event.setCancelled(true));
@@ -62,12 +62,11 @@ public class DimensionsSelectionGui {
                     return;
                 }
 
-                player.teleport(Bukkit.getWorld(data.getConfig().getString("worldGroup." + worldGroupName + ".overworld")).getSpawnLocation());
+                Location locationToTP = Bukkit.getWorld(
+                        data.getConfig().getString("worldGroup." + worldGroupName + ".overworld"))
+                        .getSpawnLocation();
 
-                data.getConfig().set("playerLocations." + player.getName() + "." + worldGroupToLeave, playerLocation);
-
-                player.sendMessage(ChatColor.DARK_AQUA + "You have been teleported to " + worldGroupName + ".");
-                data.saveConfig();
+                TeleportUtils.teleport(player, locationToTP, worldGroupToLeaveName, worldGroupName);
             });
 
             dimensionsPane.addItem(guiItem, Math.abs(numberOfDimensionsLeft - numberOfDimensions), 0);
@@ -88,12 +87,12 @@ public class DimensionsSelectionGui {
                    player.sendMessage(ChatColor.YELLOW + "That place doesn't exist.");
                    return;
                 }
-                player.teleport(Bukkit.getWorld(data.getConfig().getString("worldGroup." + worldGroupName + ".nether")).getSpawnLocation());
 
-                data.getConfig().set("playerLocations." + player.getName() + "." + worldGroupToLeave, playerLocation);
+                Location locationToTP = Bukkit.getWorld(
+                        data.getConfig().getString("worldGroup." + worldGroupName + ".nether"))
+                        .getSpawnLocation();
 
-                player.sendMessage(ChatColor.DARK_AQUA + "You have been teleported to " + worldGroupDisplayName + ".");
-                data.saveConfig();
+                TeleportUtils.teleport(player, locationToTP, worldGroupToLeaveName, worldGroupName);
             });
 
             dimensionsPane.addItem(guiItem, Math.abs(numberOfDimensionsLeft - numberOfDimensions), 0);
@@ -115,12 +114,11 @@ public class DimensionsSelectionGui {
                     return;
                 }
 
-                player.teleport(Bukkit.getWorld(data.getConfig().getString("worldGroup." + worldGroupName + ".the_end")).getSpawnLocation());
+                Location locationToTP = Bukkit.getWorld(
+                        data.getConfig().getString("worldGroup." + worldGroupName + ".the_end"))
+                        .getSpawnLocation();
 
-                data.getConfig().set("playerLocations." + player.getName() + "." + worldGroupToLeave, playerLocation);
-                data.saveConfig();
-
-                player.sendMessage(ChatColor.DARK_AQUA + "You have been teleported to " + worldGroupDisplayName + ".");
+                TeleportUtils.teleport(player, locationToTP, worldGroupToLeaveName, worldGroupName);
             });
 
             dimensionsPane.addItem(guiItem, Math.abs(numberOfDimensionsLeft - numberOfDimensions), 0);
@@ -130,35 +128,21 @@ public class DimensionsSelectionGui {
         // -------------------------------------------------------------------------------------------------------------
         // Resume GuiItem
         // -------------------------------------------------------------------------------------------------------------
-        ItemStack resumeItem = new ProcessItemStack()
-                .setMaterial(Material.LEATHER_BOOTS)
-                .setDisplayName("Resume")
-                .getItemStack();
+        if(!worldGroupName.equals(worldGroupToLeaveName)) {
+            ItemStack resumeItem = new ProcessItemStack()
+                    .setMaterial(Material.LEATHER_BOOTS)
+                    .setDisplayName("Resume")
+                    .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
+                    .getItemStack();
 
-        GuiItem resumeGuiItem = new GuiItem(resumeItem, event -> {
-            Location locationToTP;
+            GuiItem resumeGuiItem = new GuiItem(resumeItem, event -> {
+                Location locationToTP = TeleportUtils.resume(player, worldGroupName);
 
-            if (player.getWorld().getName().startsWith(worldGroupName)){
-                player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + worldGroupDisplayName);
-                return;
-            }
-            else if (data.getConfig().getLocation("menuGroupID." + worldGroupName + ".WorldTPWorldSpawnPoint") != null) {
-                locationToTP = data.getConfig().getLocation("menuGroupID." + worldGroupName + ".WorldTPWorldSpawnPoint");
-            }
-            else if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + worldGroupName) != null) {
-                locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + worldGroupName);
-            }
-            else{
-                locationToTP = Bukkit.getWorld(worldGroupName).getSpawnLocation();
-            }
+                if(locationToTP != null) TeleportUtils.teleport(player, locationToTP, worldGroupToLeaveName, worldGroupName);
+            });
 
-            data.getConfig().set("playerLocations." + player.getName() + "." + worldGroupToLeave, playerLocation);
-            data.saveConfig();
-
-            player.teleport(locationToTP);
-        });
-
-        dimensionsPane.addItem(resumeGuiItem, numberOfDimensions, 0);
+            dimensionsPane.addItem(resumeGuiItem, numberOfDimensions, 0);
+        }
 
         //--------------------------------------------------------------------------------------------------------------
         // Navigation Pane

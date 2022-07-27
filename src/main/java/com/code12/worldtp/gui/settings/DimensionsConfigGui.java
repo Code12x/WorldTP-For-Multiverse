@@ -7,12 +7,15 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class DimensionsConfigGui {
     ConfigManager config = References.config;
@@ -62,6 +65,8 @@ public class DimensionsConfigGui {
                 itemStack = new ProcessItemStack()
                         .setMaterial(Material.BARRIER)
                         .setDisplayName("ERROR")
+                        .setChatColor(ChatColor.RED)
+                        .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
                         .getItemStack();
             }
 

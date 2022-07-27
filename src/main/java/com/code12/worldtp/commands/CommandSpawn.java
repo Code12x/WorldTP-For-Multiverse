@@ -31,6 +31,7 @@ public class CommandSpawn implements CommandExecutor {
 
         Player player = (Player) sender;
         String playerName = player.getName();
+        Location playerLocation = player.getLocation();
         WorldTPWorld world = new WorldTPWorld(player.getWorld());
         String worldGroup = world.getWorldGroup();
 
@@ -39,16 +40,10 @@ public class CommandSpawn implements CommandExecutor {
             return true;
         }
 
-        if(data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint") != null){
-            Location location = data.getConfig().getLocation("menuGroupID." + worldGroup + ".WorldTPWorldSpawnPoint");
-            player.teleport(location);
-        }else{
-            Location location = Bukkit.getWorld(worldGroup).getSpawnLocation();
-            player.teleport(location);
-        }
+        Location location = Bukkit.getWorld(worldGroup).getSpawnLocation();
+        player.teleport(location);
 
-        Location loc = player.getLocation();
-        data.getConfig().set("playerLocations." + playerName + "." + worldGroup, loc);
+        data.getConfig().set("playerLocations." + playerName + "." + worldGroup, playerLocation);
 
         data.saveConfig();
 

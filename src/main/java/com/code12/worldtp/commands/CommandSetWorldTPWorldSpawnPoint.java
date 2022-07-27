@@ -2,8 +2,10 @@ package com.code12.worldtp.commands;
 
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,9 +30,12 @@ public class CommandSetWorldTPWorldSpawnPoint implements CommandExecutor {
 
         Location loc = player.getLocation();
 
-        String world = player.getWorld().getName();
+        World world = player.getWorld();
+        WorldTPWorld worldTPWorld = new WorldTPWorld(world);
 
-        data.getConfig().set("menuGroupID." + world + ".WorldTPWorldSpawnPoint", loc);
+        String worldGroupName = worldTPWorld.getWorldGroup();
+
+        data.getConfig().set("menuGroupID." + worldGroupName + ".WorldTPWorldSpawnPoint", loc);
 
         data.saveConfig();
 

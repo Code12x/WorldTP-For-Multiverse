@@ -3,22 +3,17 @@ package com.code12.worldtp.gui.worldtpmenu;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
-import com.code12.worldtp.gui.util.GuiMath;
 import com.code12.worldtp.gui.util.ProcessItemStack;
+import com.code12.worldtp.gui.util.TeleportUtils;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -87,37 +82,23 @@ public class WorldSelectionGui {
             Boolean end = config.getConfig().getBoolean(menuGroup + ".End_Teleporting");
 
             GuiItem menuGroupGuiItem = new GuiItem(menuGroupItem, event -> {
-                if(spawn || nether || end){
-                    player.closeInventory();
+                WorldTPWorld worldGroupToLeave = new WorldTPWorld(player.getWorld());
+                String worldGroupToLeaveName = worldGroupToLeave.getWorldGroup();
 
-                    DimensionsSelectionGui dimensionsSelectionGui = new DimensionsSelectionGui(Bukkit.getWorld(menuGroup), player);
-                    dimensionsSelectionGui.getGui().show(player);
+                if((spawn || nether || end)){
+                    if(!worldGroupToLeaveName.equals(menuGroup) && (data.getConfig()
+                            .getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null)){
+                        Location locationToTP = TeleportUtils.resume(player, menuGroup);
+
+                        if(locationToTP != null) TeleportUtils.teleport(player, locationToTP, worldGroupToLeaveName, menuGroup);
+                    }else{
+                        DimensionsSelectionGui dimensionsSelectionGui = new DimensionsSelectionGui(Bukkit.getWorld(menuGroup), player);
+                        dimensionsSelectionGui.getGui().show(player);
+                    }
                 } else{
-                    Location playerLocation = player.getLocation();
+                    Location locationToTP = TeleportUtils.resume(player, menuGroup);
 
-                    WorldTPWorld worldGroupToLeave = new WorldTPWorld(player.getWorld());
-                    String worldGroupToLeaveName = worldGroupToLeave.getWorldGroup();
-
-                    Location locationToTP;
-
-                    if (player.getWorld().getName().startsWith(menuGroup)){
-                        player.sendMessage(ChatColor.YELLOW + "You are already in the world: " + menuGroupDisplayName);
-                        return;
-                    }
-                    else if (data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint") != null) {
-                        locationToTP = data.getConfig().getLocation("menuGroupID." + menuGroup + ".WorldTPWorldSpawnPoint");
-                    }
-                    else if (data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup) != null) {
-                        locationToTP = data.getConfig().getLocation("playerLocations." + player.getName() + "." + menuGroup);
-                    }
-                    else{
-                        locationToTP = Bukkit.getWorld(menuGroup).getSpawnLocation();
-                    }
-
-                    data.getConfig().set("playerLocations." + player.getName() + "." + worldGroupToLeaveName, playerLocation);
-                    data.saveConfig();
-
-                    player.teleport(locationToTP);
+                    if(locationToTP != null) TeleportUtils.teleport(player, locationToTP, worldGroupToLeaveName, menuGroup);
                 }
             });
 
