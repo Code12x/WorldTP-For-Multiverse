@@ -94,27 +94,24 @@ public class DisplayItemGui {
                             .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 
                     GuiItem searchedGuiItem = new GuiItem(searchedItem, selectItemEvent -> {
-                        data.getConfig().set("menuGroupID." + world.getName() + ".item", searchedItem);
+                        data.getConfig().set("menuGroupID." + world.getName() + ".material", searchedItem.getType().toString());
 
-                        ArrayList<ItemStack> recentlySearchedItems = new ArrayList<>();
+                        ArrayList<String> recentlySearchedMaterials = new ArrayList<>();
 
-                        if(data.getConfig().getList("recentlySearchedItems") != null) {
-                            recentlySearchedItems = (ArrayList<ItemStack>) data.getConfig().getList("recentlySearchedItems");
+                        if(data.getConfig().getList("recentlySearchedMaterials") != null) {
+                            recentlySearchedMaterials = (ArrayList<String>) data.getConfig().getStringList("recentlySearchedMaterials");
 
-                            ArrayList<Material> recentlySearchedItemTypes = new ArrayList<>();
-                            recentlySearchedItems.forEach(itemStack -> recentlySearchedItemTypes.add(itemStack.getType()));
-
-                            if(recentlySearchedItemTypes.contains(searchedItem.getType())){
-                                recentlySearchedItems.removeIf(itemStack -> itemStack.getType().equals(searchedItem.getType()));
+                            if(recentlySearchedMaterials.contains(searchedItem.getType().toString())){
+                                recentlySearchedMaterials.remove(searchedItem.getType().toString());
                             }
-                            else if(recentlySearchedItems.size() >= 7){
-                                recentlySearchedItems.remove(0);
+                            else if(recentlySearchedMaterials.size() >= 7){
+                                recentlySearchedMaterials.remove(0);
                             }
                         }
 
-                        recentlySearchedItems.add(searchedItem);
+                        recentlySearchedMaterials.add(searchedItem.getType().toString());
                         
-                        data.getConfig().set("recentlySearchedItems", recentlySearchedItems);
+                        data.getConfig().set("recentlySearchedMaterials", recentlySearchedMaterials);
                         data.saveConfig();
 
                         SettingsGui settingsGui = new SettingsGui((Player) selectItemEvent.getWhoClicked(), world);
@@ -159,29 +156,30 @@ public class DisplayItemGui {
         // -------------------------------------------------------------------------------------------------------------
         // The row of recentlySearchedItems
         // -------------------------------------------------------------------------------------------------------------
-        if(data.getConfig().getList("recentlySearchedItems") != null){
-            List<ItemStack> recentlySearchedItems = (List<ItemStack>) data.getConfig().getList("recentlySearchedItems");
+        if(data.getConfig().getList("recentlySearchedMaterials") != null){
+            List<String> recentlySearchedMaterials = data.getConfig().getStringList("recentlySearchedMaterials");
 
-            int x = recentlySearchedItems.size() + 1;
+            int x = recentlySearchedMaterials.size() + 1;
 
             // ---------------------------------------------------------------------------------------------------------
-            // Iterate through each ItemStack in the recentlySearchedItems path in the data.yml and add them to the pane
+            // Iterate through each ItemStack in the recentlySearchedMaterials path in the data.yml and add them to the pane
             // ---------------------------------------------------------------------------------------------------------
-            for(ItemStack recentlySearchedItem : recentlySearchedItems){
+            for(String recentlySearchedMaterial : recentlySearchedMaterials){
+                Material material = Material.valueOf(recentlySearchedMaterial);
                 ItemStack item = new ProcessItemStack()
-                        .setMaterial(recentlySearchedItem.getType())
+                        .setMaterial(material)
                         .setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
                         .getItemStack();
                 GuiItem recentlySearchedGuiItem = new GuiItem(item, event -> {
-                    data.getConfig().set("menuGroupID." + world.getName() + ".item", item);
+                    data.getConfig().set("menuGroupID." + world.getName() + ".material", item.getType().toString());
 
-                    ArrayList<ItemStack> recentlySearchedItemsEdit = new ArrayList<>(recentlySearchedItems);
+                    ArrayList<String> recentlySearchedMaterialsEdit = new ArrayList<>(recentlySearchedMaterials);
 
                     // Do this to put the item back at the beginning
-                    recentlySearchedItemsEdit.remove(recentlySearchedItem);
-                    recentlySearchedItemsEdit.add(item);
+                    recentlySearchedMaterialsEdit.remove(item.getType().toString());
+                    recentlySearchedMaterialsEdit.add(item.getType().toString());
 
-                    data.getConfig().set("recentlySearchedItems", recentlySearchedItemsEdit);
+                    data.getConfig().set("recentlySearchedMaterials", recentlySearchedMaterialsEdit);
                     data.saveConfig();
 
                     SettingsGui settingsGui = new SettingsGui((Player) event.getWhoClicked(), world);
@@ -212,7 +210,7 @@ public class DisplayItemGui {
 
         for(ItemStack commonlyUsedItem : commonlyUsedItems){
             GuiItem commonlyUsedGuiItem = new GuiItem(commonlyUsedItem, event -> {
-                data.getConfig().set("menuGroupID." + world.getName() + ".item", commonlyUsedItem);
+                data.getConfig().set("menuGroupID." + world.getName() + ".material", commonlyUsedItem.getType().toString());
                 data.saveConfig();
 
                 SettingsGui settingsGui = new SettingsGui((Player) event.getWhoClicked(), world);

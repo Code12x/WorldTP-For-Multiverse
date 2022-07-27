@@ -75,7 +75,7 @@ public class SettingsGui {
         // -------------------------------------------------------------------------------------------------------------
         // displayItemGuiItem
         // -------------------------------------------------------------------------------------------------------------
-        Material material = data.getConfig().getItemStack("menuGroupID." + worldName + ".item").getType();
+        Material material = Material.valueOf(data.getConfig().getString("menuGroupID." + worldName + ".material"));
         ItemStack displayItem = new ProcessItemStack().setMaterial(material)
                 .setDisplayName("Change Display Item").setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES))
                 .getItemStack();

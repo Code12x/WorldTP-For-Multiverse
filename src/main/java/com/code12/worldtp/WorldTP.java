@@ -50,6 +50,6 @@ public final class WorldTP extends JavaPlugin {
         // Plugin manager
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(), this);
-        pm.registerEvents(new PlayerQuitListener(this), this);
+        pm.registerEvents(new PlayerQuitListener(), this);
     }
 }

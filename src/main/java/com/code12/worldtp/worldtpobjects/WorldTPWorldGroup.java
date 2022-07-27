@@ -17,8 +17,8 @@ public class WorldTPWorldGroup {
     private final String worldName;
     @Setter private String displayName;
     @Setter private int position;
-    @Setter private ItemStack item = new ItemStack(Material.GRASS_BLOCK);
-    @Setter private Boolean adminOnly = false;
+    @Setter private Material material;
+    @Setter private Boolean adminOnly;
 
 
     public WorldTPWorldGroup(String worldName){
@@ -32,7 +32,7 @@ public class WorldTPWorldGroup {
         data.getConfig().set("menuGroupList", worldList);
 
         data.getConfig().set("menuGroupID." + worldName + ".displayName", displayName);
-        data.getConfig().set("menuGroupID." + worldName + ".item", item);
+        data.getConfig().set("menuGroupID." + worldName + ".material", material.toString());
         data.getConfig().set("menuGroupID." + worldName + ".admin", adminOnly);
         data.getConfig().set("menuGroupID." + worldName + ".position", position);
 

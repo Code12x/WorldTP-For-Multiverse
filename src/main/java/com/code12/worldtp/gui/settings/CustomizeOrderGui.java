@@ -35,7 +35,7 @@ public class CustomizeOrderGui {
 
         for(String menuGroup : menuGroupList){
             String displayName = menuGroup + " (" + data.getConfig().getString("menuGroupID." + menuGroup + ".displayName") + ")";
-            Material material = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType();
+            Material material = Material.valueOf(data.getConfig().getString("menuGroupID." + menuGroup + ".material"));
             ItemStack menuGroupItemStack = new ProcessItemStack().setMaterial(material)
                     .setDisplayName(displayName).setItemFlags(List.of(ItemFlag.HIDE_ATTRIBUTES)).getItemStack();
 

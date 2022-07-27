@@ -62,23 +62,23 @@ public class CommandReloadWorlds implements CommandExecutor {
         data.saveConfig();
 
         for(String worldGroup : menuGroupList) {
-            ItemStack item;
+            Material material;
             String displayName;
             boolean adminOnly;
             int position = menuGroupList.indexOf(worldGroup);
 
             if (data.getConfig().get("menuGroupID." + worldGroup) != null) { // worldGroup HAS been registered before
-                item = data.getConfig().getItemStack("menuGroupID." + worldGroup + ".item");
+                material = Material.valueOf(data.getConfig().getString("menuGroupID." + worldGroup + ".material"));
                 displayName = data.getConfig().getString("menuGroupID." + worldGroup + ".displayName");
                 adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
             } else { // worldGroup has NOT been registered before
-                item = new ProcessItemStack().setMaterial(Material.GRASS_BLOCK).getItemStack();
+                material = Material.GRASS_BLOCK;
                 displayName = worldGroup;
                 adminOnly = false;
             }
 
             WorldTPWorldGroup worldTPWorldGroup = new WorldTPWorldGroup(worldGroup);
-            worldTPWorldGroup.setItem(item);
+            worldTPWorldGroup.setMaterial(material);
             worldTPWorldGroup.setDisplayName(displayName);
             worldTPWorldGroup.setAdminOnly(adminOnly);
             worldTPWorldGroup.setPosition(position);

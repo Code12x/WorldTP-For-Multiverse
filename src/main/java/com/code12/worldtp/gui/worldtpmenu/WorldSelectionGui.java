@@ -73,8 +73,8 @@ public class WorldSelectionGui {
         // Add menuGroups to the worldsPane
         // -------------------------------------------------------------------------------------------------------------
         for (String menuGroup : menuGroupList) {
-            Material material = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType() != null ?
-                    data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType() : Material.GRASS_BLOCK;
+            Material material = data.getConfig().get("menuGroupID." + menuGroup + ".material") != null ?
+                    Material.valueOf(data.getConfig().getString("menuGroupID." + menuGroup + ".material")) : Material.GRASS_BLOCK;
 
             String menuGroupDisplayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 

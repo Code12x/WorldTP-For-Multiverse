@@ -49,7 +49,7 @@ public class SelectWorldToEditGui {
         List<String> menuGroupList = data.getConfig().getStringList("menuGroupList");
 
         for(String menuGroup : menuGroupList){
-            Material material = data.getConfig().getItemStack("menuGroupID." + menuGroup + ".item").getType();
+            Material material = Material.valueOf(data.getConfig().getString("menuGroupID." + menuGroup + ".material"));
             String displayName = data.getConfig().getString("menuGroupID." + menuGroup + ".displayName");
 
             ItemStack item = new ProcessItemStack().setMaterial(material)
