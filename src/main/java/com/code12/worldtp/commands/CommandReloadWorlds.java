@@ -68,7 +68,16 @@ public class CommandReloadWorlds implements CommandExecutor {
             int position = menuGroupList.indexOf(worldGroup);
 
             if (data.getConfig().get("menuGroupID." + worldGroup) != null) { // worldGroup HAS been registered before
-                material = Material.valueOf(data.getConfig().getString("menuGroupID." + worldGroup + ".material"));
+                try{
+                    material = Material.valueOf(data.getConfig().getString("menuGroupID." + worldGroup + ".material"));
+                }catch (Exception e){
+                    try{
+                        material = data.getConfig().getItemStack("menuGroupID." + worldGroup + ".item").getType();
+                    }catch (Exception e1){
+                        material = Material.ACACIA_BOAT;
+                    }
+                }
+
                 displayName = data.getConfig().getString("menuGroupID." + worldGroup + ".displayName");
                 adminOnly = data.getConfig().getBoolean("menuGroupID." + worldGroup + ".admin");
             } else { // worldGroup has NOT been registered before
