@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +82,10 @@ public class DisplayItemGui {
                 ChestGui resultsOfSearchGui = new ChestGui(1, "Search results for \"" + renameText + "\"");
 
                 resultsOfSearchGui.setOnGlobalClick(e -> e.setCancelled(true));
+                resultsOfSearchGui.setOnClose(e -> {
+                    DisplayItemGui displayItemGui = new DisplayItemGui(world);
+                    displayItemGui.getGui().show(e.getPlayer());
+                });
 
                 StaticPane mainPain = new StaticPane(0, 0, 9, 1);
 
