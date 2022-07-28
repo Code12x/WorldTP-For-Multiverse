@@ -1,6 +1,5 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
@@ -9,12 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandListWorlds implements CommandExecutor {
-    WorldTP plugin;
-    public DataManager data = References.data;
-
-    public CommandListWorlds(WorldTP plugin) {
-        this.plugin = plugin;
-    }
+    private final DataManager data = References.data;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){

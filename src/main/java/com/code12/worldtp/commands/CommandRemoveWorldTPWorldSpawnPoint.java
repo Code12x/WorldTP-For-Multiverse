@@ -1,6 +1,5 @@
 package com.code12.worldtp.commands;
 
-import com.code12.worldtp.WorldTP;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import org.bukkit.ChatColor;
@@ -10,13 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandRemoveWorldTPWorldSpawnPoint implements CommandExecutor {
-    WorldTP plugin;
-
     public DataManager data = References.data;
-
-    public CommandRemoveWorldTPWorldSpawnPoint(WorldTP plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){

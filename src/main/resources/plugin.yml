@@ -10,10 +10,10 @@ commands:
     descrition: Opens a menu for the player to navigate between worlds
     usage: /<command>
     aliases: wtp
-  editworld:
-    description: Allows an admin to edit the registery of a world.
-    usage: /<command> [world name] [display name] [item to be displayed] [admin only (true/false)]
-    permission: worldtp.editworld
+  worldtpsettings:
+    description: Allows an admin to edit the registry of a world.
+    usage: /<command>
+    permission: worldtp.worldtpsettings
   deleteworld:
     description: Allows an admin to delete a registered world group. (only a virtual delete, doesn't acturally delete the world file)
     usage: /<command> [world to delete]
