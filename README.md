@@ -19,7 +19,7 @@ WorldTP uses the Multiverse-Core API, so you MUST HAVE "Multiverse-Core" for thi
 ## __Features:__
 
 * A "World Menu" menu (GUI).
-* Each world group in the World Menu can have customized display items and custom display names with the command /editworld.
+* [NEW] Each world "group" can be customized with a GUI that can be opened by running the command `/worldtpsettings`.
 * Whitelisted worlds! Players with the permission `worldtp.worldtp` can access whitelisted worlds.
 * Automatically finds worlds and registers them when the command `/reloadworlds` is run.
 * Players will pick up right where they left off in any given world group. (So, no more teleporting to the end dimension without traveling there.)
