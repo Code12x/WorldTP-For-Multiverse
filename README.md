@@ -1,4 +1,4 @@
-##__IMPORTANT__
+## __IMPORTANT!!!__
 If you are updating from version 1.3.2 to v1.4.0, you must run the command `/reloadworlds` so WorldTP can fix the world registries in the data.yml.
 
 # WorldTP-For-Multiverse
