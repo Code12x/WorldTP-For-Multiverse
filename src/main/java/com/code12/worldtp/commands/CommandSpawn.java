@@ -3,6 +3,7 @@ package com.code12.worldtp.commands;
 import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
+import com.code12.worldtp.gui.util.TeleportUtils;
 import com.code12.worldtp.worldtpobjects.WorldTPWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,11 +42,8 @@ public class CommandSpawn implements CommandExecutor {
         }
 
         Location location = Bukkit.getWorld(worldGroup).getSpawnLocation();
-        player.teleport(location);
 
-        data.getConfig().set("playerLocations." + playerName + "." + worldGroup, playerLocation);
-
-        data.saveConfig();
+        TeleportUtils.teleport(player, location, worldGroup, worldGroup);
 
         return true;
     }
