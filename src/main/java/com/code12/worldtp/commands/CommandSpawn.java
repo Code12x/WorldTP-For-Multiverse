@@ -31,8 +31,6 @@ public class CommandSpawn implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        String playerName = player.getName();
-        Location playerLocation = player.getLocation();
         WorldTPWorld world = new WorldTPWorld(player.getWorld());
         String worldGroup = world.getWorldGroup();
 
