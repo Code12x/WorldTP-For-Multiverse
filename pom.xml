@@ -6,7 +6,7 @@
 
     <groupId>com.code12</groupId>
     <artifactId>WorldTP</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <packaging>jar</packaging>
 
     <name>WorldTP</name>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.10.7</version>
+            <version>0.10.8</version>
         </dependency>
 
         <!--Lombok -->
