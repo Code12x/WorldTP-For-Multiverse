@@ -112,3 +112,8 @@ buildNumber.properties
 # Common working directory
 run/
 /MyNotes/
+
+.classpath
+.factorypath
+.project
+.settings/
