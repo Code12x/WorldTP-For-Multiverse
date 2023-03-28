@@ -5,7 +5,7 @@ import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.gui.util.ProcessItemStack;
 import com.code12.worldtp.gui.util.TeleportUtils;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worlds.WorldTPWorld;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;

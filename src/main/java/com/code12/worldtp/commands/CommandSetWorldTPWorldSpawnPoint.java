@@ -2,7 +2,7 @@ package com.code12.worldtp.commands;
 
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worlds.WorldTPWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;

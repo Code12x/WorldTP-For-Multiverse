@@ -4,7 +4,7 @@ import com.code12.worldtp.files.ConfigManager;
 import com.code12.worldtp.files.DataManager;
 import com.code12.worldtp.files.References;
 import com.code12.worldtp.gui.util.TeleportUtils;
-import com.code12.worldtp.worldtpobjects.WorldTPWorld;
+import com.code12.worldtp.worlds.WorldTPWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
